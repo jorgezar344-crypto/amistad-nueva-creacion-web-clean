@@ -10,14 +10,11 @@ import {
   MapPin,
   Sparkles,
   MessageCircle,
-  ExternalLink,
   CheckCircle2,
 } from '../../components/icons/Icons';
 import {
-  CHURCH_EVENTS,
   getEventsGroupedByMonth,
   EventItem,
-  EventStatus,
 } from '../../data/eventsData';
 import { VisitCoordinationModal } from '../../components/home/VisitCoordinationModal';
 
@@ -25,10 +22,11 @@ export default function ChurchCalendarPage() {
   const [selectedMonth, setSelectedMonth] = useState<string>('TODOS');
   const [isVisitModalOpen, setIsVisitModalOpen] = useState(false);
 
-  // Grouped events from 21 Aug 2026
-  const groupedMonths = getEventsGroupedByMonth(new Date('2026-08-21T00:00:00'));
+  // Grouped active/upcoming events dynamically in America/Mexico_City
+  const groupedMonths = getEventsGroupedByMonth();
 
-  const monthsList = ['TODOS', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  // Dynamic month tabs list from available active months (no empty tabs)
+  const availableMonths = ['TODOS', ...groupedMonths.map((g) => g.monthName)];
 
   const filteredGroupedMonths =
     selectedMonth === 'TODOS'
@@ -79,7 +77,7 @@ export default function ChurchCalendarPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-12 px-4 sm:px-6 lg:px-8 text-center max-w-4xl mx-auto">
+      <section className="pt-32 pb-10 px-4 sm:px-6 lg:px-8 text-center max-w-4xl mx-auto">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel text-xs font-bold text-cyan-electric mb-4 shadow-cyanGlow border border-cyan-electric/30">
           <Calendar className="w-4 h-4 text-cyan-electric" />
           <span>Actividades Oficiales 2026</span>
@@ -90,195 +88,182 @@ export default function ChurchCalendarPage() {
         </h1>
 
         <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
-          Conoce nuestras próximas reuniones, encuentros y actividades especiales. Hay momentos que vivimos mejor juntos como familia espiritual.
+          Conoce nuestras próximas reuniones, encuentros y actividades especiales.
         </p>
-
-        {/* Regular Service Quick Pill */}
-        <div className="mt-8 inline-flex flex-wrap items-center justify-center gap-3 px-5 py-2.5 rounded-2xl bg-surface/60 border border-white/10 text-xs text-brandText-muted">
-          <span className="font-bold text-white flex items-center gap-1.5">
-            <Clock className="w-3.5 h-3.5 text-cyan-electric" />
-            Reuniones Regulares:
-          </span>
-          <span className="text-slate-200">Domingos 11:30 AM (Familiar)</span>
-          <span className="hidden sm:inline text-white/30">&bull;</span>
-          <span className="text-slate-200">Jueves 8:00 PM (Oración y Discipulado)</span>
-        </div>
       </section>
 
-      {/* Month Selector Tabs */}
-      <section className="sticky top-[57px] z-40 bg-void/90 backdrop-blur-lg py-3 border-y border-white/10 px-4">
-        <div className="max-w-5xl mx-auto flex items-center justify-start sm:justify-center gap-2 overflow-x-auto no-scrollbar py-1">
-          {monthsList.map((month) => {
-            const isSelected = selectedMonth === month;
-            return (
-              <button
-                key={month}
-                onClick={() => setSelectedMonth(month)}
-                className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 ${
-                  isSelected
-                    ? 'bg-cyan-electric text-void shadow-cyanGlow scale-105'
-                    : 'glass-panel text-slate-300 hover:text-white hover:border-cyan-electric/40'
-                }`}
-                aria-pressed={isSelected}
-              >
-                {month}
-              </button>
-            );
-          })}
-        </div>
-      </section>
+      {/* Month Selector Tabs (Only active months with upcoming events) */}
+      {availableMonths.length > 1 && (
+        <section className="sticky top-[57px] z-40 bg-void/90 backdrop-blur-lg py-3 border-y border-white/10 px-4">
+          <div className="max-w-5xl mx-auto flex items-center justify-start sm:justify-center gap-2 overflow-x-auto no-scrollbar py-1">
+            {availableMonths.map((month) => {
+              const isSelected = selectedMonth === month;
+              return (
+                <button
+                  key={month}
+                  onClick={() => setSelectedMonth(month)}
+                  className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 ${
+                    isSelected
+                      ? 'bg-cyan-electric text-void shadow-cyanGlow scale-105'
+                      : 'glass-panel text-slate-300 hover:text-white hover:border-cyan-electric/40'
+                  }`}
+                  aria-pressed={isSelected}
+                >
+                  {month}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Events Grouped by Month */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
-        {filteredGroupedMonths.map((group) => (
-          <div key={`${group.monthName}-${group.year}`} className="space-y-6">
-            {/* Month Header Banner */}
-            <div className="flex items-center gap-3 pb-3 border-b border-cyan-electric/20">
-              <span className="w-3 h-3 rounded-full bg-cyan-electric shadow-cyanGlow"></span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight uppercase">
-                {group.monthName} <span className="text-cyan-electric font-light">{group.year}</span>
-              </h2>
-              <span className="text-xs text-brandText-muted ml-auto font-semibold">
-                {group.events.length} {group.events.length === 1 ? 'evento' : 'eventos'}
-              </span>
-            </div>
+        {filteredGroupedMonths.length === 0 ? (
+          <div className="text-center py-16 glass-panel rounded-3xl p-8 border border-white/10">
+            <Calendar className="w-12 h-12 text-cyan-electric mx-auto mb-4 opacity-80" />
+            <h3 className="text-xl font-bold text-white mb-2">No hay eventos próximos registrados</h3>
+            <p className="text-sm text-slate-400">Consulta más adelante para nuevas fechas confirmadas.</p>
+          </div>
+        ) : (
+          filteredGroupedMonths.map((group) => (
+            <div key={`${group.monthName}-${group.year}`} className="space-y-6">
+              {/* Month Header Banner */}
+              <div className="flex items-center gap-3 pb-3 border-b border-cyan-electric/20">
+                <span className="w-3 h-3 rounded-full bg-cyan-electric shadow-cyanGlow"></span>
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight uppercase">
+                  {group.monthName} <span className="text-cyan-electric font-light">{group.year}</span>
+                </h2>
+                <span className="text-xs text-brandText-muted ml-auto font-semibold">
+                  {group.events.length} {group.events.length === 1 ? 'evento' : 'eventos'}
+                </span>
+              </div>
 
-            {/* Event Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {group.events.map((evt) => (
-                <article
-                  key={evt.id}
-                  className={`rounded-3xl glass-panel-elevated overflow-hidden border transition-all duration-300 flex flex-col justify-between group shadow-cardGlow ${
-                    evt.featured
-                      ? 'border-cyan-electric/40 hover:border-cyan-electric/80'
-                      : 'border-white/10 hover:border-cyan-electric/40'
-                  }`}
-                >
-                  {/* Optional Image */}
-                  {evt.image && (
-                    <div className="relative h-44 w-full overflow-hidden bg-void/60">
-                      <Image
-                        src={evt.image}
-                        alt={evt.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent"></div>
-                      
-                      <span className="absolute top-3 right-3 text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-void/80 text-cyan-electric border border-cyan-electric/40 backdrop-blur-md">
-                        {evt.category}
-                      </span>
-                    </div>
-                  )}
+              {/* Event Cards Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {group.events.map((evt) => (
+                  <article
+                    key={evt.id}
+                    className={`rounded-3xl glass-panel-elevated overflow-hidden border transition-all duration-300 flex flex-col justify-between group shadow-cardGlow ${
+                      evt.featured
+                        ? 'border-cyan-electric/40 hover:border-cyan-electric/80'
+                        : 'border-white/10 hover:border-cyan-electric/40'
+                    }`}
+                  >
+                    {/* Optional Image */}
+                    {evt.image && (
+                      <div className="relative h-44 w-full overflow-hidden bg-void/60">
+                        <Image
+                          src={evt.image}
+                          alt={evt.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent"></div>
+                        
+                        <span className="absolute top-3 right-3 text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-void/80 text-cyan-electric border border-cyan-electric/40 backdrop-blur-md">
+                          {evt.category}
+                        </span>
+                      </div>
+                    )}
 
-                  <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
-                    <div>
-                      {/* Date Badge & Time */}
-                      <div className="flex items-center gap-4 mb-5">
-                        <div className="w-16 h-16 rounded-2xl bg-cyan-deep/40 border border-cyan-electric/40 flex flex-col items-center justify-center text-cyan-electric shadow-cyanGlow shrink-0">
-                          <span className="text-[11px] font-black tracking-widest uppercase">
-                            {evt.monthBadge}
-                          </span>
-                          <span className="text-xl font-black leading-none">{evt.dayBadge}</span>
+                    <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
+                      <div>
+                        {/* Date Badge & Time */}
+                        <div className="flex items-center gap-4 mb-5">
+                          <div className="w-16 h-16 rounded-2xl bg-cyan-deep/40 border border-cyan-electric/40 flex flex-col items-center justify-center text-cyan-electric shadow-cyanGlow shrink-0">
+                            <span className="text-[11px] font-black tracking-widest uppercase">
+                              {evt.monthBadge}
+                            </span>
+                            <span className="text-xl font-black leading-none">{evt.dayBadge}</span>
+                          </div>
+
+                          <div>
+                            {evt.time && (
+                              <div className="flex items-center gap-1.5 text-xs text-cyan-electric font-bold">
+                                <Clock className="w-3.5 h-3.5 shrink-0" />
+                                <span>{evt.time}</span>
+                              </div>
+                            )}
+                            <div className="text-xs text-slate-300 font-semibold mt-1">
+                              {evt.dateDisplay}
+                            </div>
+                          </div>
                         </div>
 
-                        <div>
-                          <div className="flex items-center gap-1.5 text-xs text-cyan-electric font-bold">
-                            <Clock className="w-3.5 h-3.5 shrink-0" />
-                            <span>{evt.time}</span>
+                        {/* Title */}
+                        <h3 className="text-xl font-extrabold text-white mb-3 group-hover:text-cyan-electric transition-colors">
+                          {evt.title}
+                        </h3>
+
+                        {/* Guest Speaker Badge */}
+                        {evt.guest && (
+                          <div className="mb-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold">
+                            <Sparkles className="w-3.5 h-3.5" />
+                            <span>{evt.guest}</span>
                           </div>
-                          <div className="flex items-center gap-1.5 text-xs text-brandText-muted mt-1">
-                            <MapPin className="w-3.5 h-3.5 shrink-0 text-slate-400" />
-                            <span>{evt.location}</span>
+                        )}
+
+                        {/* Multi-Schedule List if present */}
+                        {evt.timeSchedule && evt.timeSchedule.length > 0 && (
+                          <div className="rounded-2xl bg-void/80 border border-white/10 p-3.5 mb-4 space-y-1.5">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-electric block mb-1">
+                              Horarios por día:
+                            </span>
+                            {evt.timeSchedule.map((s, idx) => (
+                              <div key={idx} className="flex items-center justify-between text-xs text-slate-300">
+                                <span>{s.label}:</span>
+                                <span className="font-semibold text-white">{s.time}</span>
+                              </div>
+                            ))}
                           </div>
-                          <div className="text-[11px] font-semibold text-slate-300 mt-1">
-                            {evt.dateDisplay}
-                          </div>
-                        </div>
+                        )}
+
+                        {/* Details list */}
+                        {evt.details && evt.details.length > 0 && (
+                          <ul className="rounded-2xl bg-surface/70 border border-white/5 p-3.5 mb-4 space-y-1.5">
+                            {evt.details.map((d, idx) => (
+                              <li key={idx} className="flex items-start gap-2 text-xs text-slate-300">
+                                <CheckCircle2 className="w-3.5 h-3.5 text-cyan-electric shrink-0 mt-0.5" />
+                                <span>{d}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                       </div>
 
-                      {/* Title & Subtitle */}
-                      <h3 className="text-xl font-extrabold text-white mb-2 group-hover:text-cyan-electric transition-colors">
-                        {evt.title}
-                      </h3>
-                      {evt.subtitle && (
-                        <p className="text-xs font-semibold text-cyan-electric mb-3">
-                          {evt.subtitle}
-                        </p>
-                      )}
+                      {/* Card Footer Actions */}
+                      <div className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 mt-4">
+                        <a
+                          href="https://maps.app.goo.gl/uX3LgMh5v7x"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs font-bold text-slate-300 hover:text-cyan-electric flex items-center gap-1.5 transition-colors"
+                        >
+                          <MapPin className="w-3.5 h-3.5 text-cyan-electric" />
+                          <span>Cómo llegar</span>
+                        </a>
 
-                      {/* Description */}
-                      <p className="text-sm text-slate-200 leading-relaxed mb-4">
-                        {evt.description}
-                      </p>
-
-                      {/* Guest Speaker Badge */}
-                      {evt.guest && (
-                        <div className="mb-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold">
-                          <Sparkles className="w-3.5 h-3.5" />
-                          <span>Invitado Especial: {evt.guest}</span>
-                        </div>
-                      )}
-
-                      {/* Multi-Schedule List if present */}
-                      {evt.timeSchedule && evt.timeSchedule.length > 0 && (
-                        <div className="rounded-2xl bg-void/80 border border-white/10 p-3.5 mb-4 space-y-1.5">
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-electric block mb-1">
-                            Horarios por sesión:
-                          </span>
-                          {evt.timeSchedule.map((s, idx) => (
-                            <div key={idx} className="flex items-center justify-between text-xs text-slate-300">
-                              <span>{s.label}:</span>
-                              <span className="font-semibold text-white">{s.time}</span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Details list */}
-                      {evt.details && evt.details.length > 0 && (
-                        <ul className="rounded-2xl bg-surface/70 border border-white/5 p-3.5 mb-4 space-y-1.5">
-                          {evt.details.map((d, idx) => (
-                            <li key={idx} className="flex items-start gap-2 text-xs text-slate-300">
-                              <CheckCircle2 className="w-3.5 h-3.5 text-cyan-electric shrink-0 mt-0.5" />
-                              <span>{d}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
+                        <a
+                          href={`https://wa.me/524424112143?text=${encodeURIComponent(
+                            `Hola, me gustaría recibir información sobre ${evt.title} del ${evt.dateDisplay}.`
+                          )}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-3.5 py-1.5 rounded-full glass-panel text-xs font-bold text-cyan-electric hover:text-white hover:border-cyan-electric transition-all flex items-center gap-1.5"
+                        >
+                          <MessageCircle className="w-3.5 h-3.5" />
+                          <span>Preguntar por WhatsApp</span>
+                        </a>
+                      </div>
                     </div>
-
-                    {/* Card Footer Actions */}
-                    <div className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 mt-4">
-                      <a
-                        href="https://maps.app.goo.gl/uX3LgMh5v7x"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs font-bold text-slate-300 hover:text-cyan-electric flex items-center gap-1.5 transition-colors"
-                      >
-                        <MapPin className="w-3.5 h-3.5 text-cyan-electric" />
-                        <span>Cómo llegar (Ubicación)</span>
-                      </a>
-
-                      <a
-                        href={`https://wa.me/524424112143?text=${encodeURIComponent(
-                          `Hola, me gustaría más información sobre el evento: ${evt.title} (${evt.dateDisplay}) de Amistad Nueva Creación.`
-                        )}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-3.5 py-1.5 rounded-full glass-panel text-xs font-bold text-cyan-electric hover:text-white hover:border-cyan-electric transition-all flex items-center gap-1.5"
-                      >
-                        <MessageCircle className="w-3.5 h-3.5" />
-                        <span>Preguntar por WhatsApp</span>
-                      </a>
-                    </div>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </section>
 
       {/* Footer Navigation */}
@@ -313,4 +298,5 @@ export default function ChurchCalendarPage() {
     </main>
   );
 }
+
 

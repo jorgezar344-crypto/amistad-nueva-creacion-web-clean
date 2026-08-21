@@ -3,12 +3,12 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Calendar, Clock, MapPin, Sparkles, ArrowRight } from '../icons/Icons';
+import { Calendar, Clock, MapPin, Sparkles, ArrowRight, CheckCircle2 } from '../icons/Icons';
 import { getUpcomingEvents } from '../../data/eventsData';
 
 export const EventsSection: React.FC = () => {
-  // Uses dynamic reference date 2026-08-21
-  const upcomingEvents = getUpcomingEvents(new Date('2026-08-21T00:00:00'), 3);
+  // Uses real dynamic date in America/Mexico_City timezone
+  const upcomingEvents = getUpcomingEvents(3);
 
   return (
     <section
@@ -43,7 +43,7 @@ export const EventsSection: React.FC = () => {
 
         {/* Dynamic 3 Upcoming Event Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          {upcomingEvents.map((evt, idx) => (
+          {upcomingEvents.map((evt) => (
             <article
               key={evt.id}
               className="rounded-3xl glass-panel-elevated overflow-hidden border border-cyan-electric/15 hover:border-cyan-electric/50 transition-all duration-300 flex flex-col justify-between group shadow-cardGlow hover:-translate-y-1"
@@ -79,30 +79,40 @@ export const EventsSection: React.FC = () => {
                     </div>
 
                     <div>
-                      <div className="flex items-center gap-1.5 text-xs text-cyan-electric font-bold">
-                        <Clock className="w-3.5 h-3.5 shrink-0" />
-                        <span>{evt.time}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-xs text-brandText-muted mt-0.5">
-                        <MapPin className="w-3.5 h-3.5 shrink-0" />
-                        <span className="truncate">{evt.location}</span>
+                      {evt.time && (
+                        <div className="flex items-center gap-1.5 text-xs text-cyan-electric font-bold">
+                          <Clock className="w-3.5 h-3.5 shrink-0" />
+                          <span>{evt.time}</span>
+                        </div>
+                      )}
+                      <div className="text-xs text-slate-300 font-medium mt-0.5">
+                        {evt.dateDisplay}
                       </div>
                     </div>
                   </div>
 
-                  {/* Title & Description */}
-                  <h3 className="text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-cyan-electric transition-colors">
+                  {/* Title */}
+                  <h3 className="text-lg sm:text-xl font-bold text-white mb-3 group-hover:text-cyan-electric transition-colors">
                     {evt.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
-                    {evt.description}
-                  </p>
 
-                  {/* Guest or details highlight */}
+                  {/* Guest Speaker */}
                   {evt.guest && (
-                    <div className="text-[11px] font-semibold text-amber-300 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-lg mb-4 inline-block">
-                      Invitado: {evt.guest}
+                    <div className="text-[11px] font-semibold text-amber-300 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-lg mb-3 inline-block">
+                      {evt.guest}
                     </div>
+                  )}
+
+                  {/* Details List */}
+                  {evt.details && evt.details.length > 0 && (
+                    <ul className="space-y-1 mb-4">
+                      {evt.details.map((d, idx) => (
+                        <li key={idx} className="flex items-start gap-1.5 text-xs text-slate-300">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-cyan-electric shrink-0 mt-0.5" />
+                          <span>{d}</span>
+                        </li>
+                      ))}
+                    </ul>
                   )}
                 </div>
 
@@ -119,7 +129,7 @@ export const EventsSection: React.FC = () => {
                     href="/calendario"
                     className="text-xs font-bold text-cyan-electric hover:underline flex items-center gap-1"
                   >
-                    <span>Detalles</span>
+                    <span>Ver detalles</span>
                     <span>&rarr;</span>
                   </Link>
                 </div>
@@ -132,7 +142,7 @@ export const EventsSection: React.FC = () => {
         <div className="rounded-2xl glass-panel p-5 text-center border border-cyan-electric/20 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-left">
             <span className="text-xs font-bold text-white block">
-              ¿Quieres consultar todas las actividades de agosto a diciembre de 2026?
+              Consulta todas las actividades y reuniones de nuestra congregación
             </span>
             <span className="text-[11px] text-brandText-muted">
               Santa Cena mensual, Aniversario, Encuentros, Capacitación y Congreso anual.
@@ -150,4 +160,5 @@ export const EventsSection: React.FC = () => {
     </section>
   );
 };
+
 
