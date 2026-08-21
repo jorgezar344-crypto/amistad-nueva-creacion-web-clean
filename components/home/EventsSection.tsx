@@ -1,98 +1,153 @@
 'use client';
 
 import React from 'react';
-import { Calendar, Clock, MapPin, Sparkles } from '../icons/Icons';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Calendar, Clock, MapPin, Sparkles, ArrowRight } from '../icons/Icons';
+import { getUpcomingEvents } from '../../data/eventsData';
 
 export const EventsSection: React.FC = () => {
-  const events = [
-    {
-      dateBadge: { day: 'DOM', num: '24' },
-      title: 'Servicio Dominical Especial de Bienvenida',
-      time: '11:30 AM',
-      location: 'Auditorio Principal',
-      description: 'Una reunión dedicada a recibir a nuevas familias y celebrar la comunión en Cristo.',
-    },
-    {
-      dateBadge: { day: 'JUE', num: '28' },
-      title: 'Noche de Discipulado y Oración',
-      time: '8:00 PM',
-      location: 'Auditorio & Transmisión',
-      description: 'Estudio bíblico para afianzar los fundamentos de nuestra fe y clamar por nuestra ciudad.',
-    },
-    {
-      dateBadge: { day: 'PRÓX', num: 'SEP' },
-      title: 'Próximo Encuentro de Restauración',
-      time: 'Fin de semana',
-      location: 'Fechas por confirmar',
-      description: 'Un tiempo apartado para buscar a Dios de manera intencional y experimentar su sanidad.',
-    },
-  ];
+  // Uses dynamic reference date 2026-08-21
+  const upcomingEvents = getUpcomingEvents(new Date('2026-08-21T00:00:00'), 3);
 
   return (
     <section
       id="eventos"
       className="relative py-24 px-4 sm:px-6 lg:px-8 bg-surface/30 border-y border-cyan-electric/10"
-      aria-label="Próximos eventos y actividades"
+      aria-label="Próximos eventos y actividades de la iglesia"
     >
       <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
           <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-cyan-electric block mb-2">
-              Calendario & Vida de Iglesia
-            </span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel text-[11px] font-bold text-cyan-electric mb-3 border border-cyan-electric/30">
+              <Calendar className="w-3.5 h-3.5" />
+              <span>Vida de Iglesia &bull; Comunidad</span>
+            </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-              Próximas Actividades
+              Próximos Eventos
             </h2>
+            <p className="text-sm sm:text-base text-cyan-electric/90 font-medium mt-1">
+              Hay momentos que vivimos mejor juntos.
+            </p>
           </div>
-          <p className="text-sm text-brandText-secondary max-w-md">
-            Mantente conectado con lo que Dios está haciendo en nuestra congregación.
-          </p>
+
+          <Link
+            href="/calendario"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full glass-panel font-bold text-xs sm:text-sm text-cyan-electric hover:text-white hover:border-cyan-electric transition-all shadow-cyanGlow self-start md:self-auto"
+          >
+            <span>Ver calendario completo</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {events.map((evt, idx) => (
-            <div
-              key={idx}
-              className="rounded-3xl glass-panel p-6 sm:p-8 border border-cyan-electric/15 hover:border-cyan-electric/40 transition-all duration-300 flex flex-col justify-between"
+        {/* Dynamic 3 Upcoming Event Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          {upcomingEvents.map((evt, idx) => (
+            <article
+              key={evt.id}
+              className="rounded-3xl glass-panel-elevated overflow-hidden border border-cyan-electric/15 hover:border-cyan-electric/50 transition-all duration-300 flex flex-col justify-between group shadow-cardGlow hover:-translate-y-1"
             >
-              <div>
-                {/* Date Header */}
-                <div className="flex items-center gap-3.5 mb-6">
-                  <div className="w-14 h-14 rounded-2xl bg-cyan-deep/40 border border-cyan-electric/30 flex flex-col items-center justify-center text-cyan-electric shadow-cyanGlow">
-                    <span className="text-[10px] font-black tracking-widest uppercase">
-                      {evt.dateBadge.day}
-                    </span>
-                    <span className="text-lg font-black leading-none">{evt.dateBadge.num}</span>
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-1 text-xs text-cyan-electric font-semibold">
-                      <Clock className="w-3.5 h-3.5" />
-                      <span>{evt.time}</span>
+              {/* Optional Top Image */}
+              {evt.image && (
+                <div className="relative h-44 w-full overflow-hidden bg-void/60">
+                  <Image
+                    src={evt.image}
+                    alt={evt.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/30 to-transparent"></div>
+                  
+                  {/* Category Pill on Image */}
+                  <span className="absolute top-3 right-3 text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-void/80 text-cyan-electric border border-cyan-electric/40 backdrop-blur-md">
+                    {evt.category}
+                  </span>
+                </div>
+              )}
+
+              <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
+                <div>
+                  {/* Date & Time Header */}
+                  <div className="flex items-center gap-3.5 mb-5">
+                    <div className="w-14 h-14 rounded-2xl bg-cyan-deep/40 border border-cyan-electric/40 flex flex-col items-center justify-center text-cyan-electric shadow-cyanGlow shrink-0">
+                      <span className="text-[10px] font-black tracking-widest uppercase">
+                        {evt.monthBadge}
+                      </span>
+                      <span className="text-lg font-black leading-none">{evt.dayBadge}</span>
                     </div>
-                    <div className="flex items-center gap-1 text-xs text-brandText-muted">
-                      <MapPin className="w-3.5 h-3.5" />
-                      <span>{evt.location}</span>
+
+                    <div>
+                      <div className="flex items-center gap-1.5 text-xs text-cyan-electric font-bold">
+                        <Clock className="w-3.5 h-3.5 shrink-0" />
+                        <span>{evt.time}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-xs text-brandText-muted mt-0.5">
+                        <MapPin className="w-3.5 h-3.5 shrink-0" />
+                        <span className="truncate">{evt.location}</span>
+                      </div>
                     </div>
                   </div>
+
+                  {/* Title & Description */}
+                  <h3 className="text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-cyan-electric transition-colors">
+                    {evt.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
+                    {evt.description}
+                  </p>
+
+                  {/* Guest or details highlight */}
+                  {evt.guest && (
+                    <div className="text-[11px] font-semibold text-amber-300 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-lg mb-4 inline-block">
+                      Invitado: {evt.guest}
+                    </div>
+                  )}
                 </div>
 
-                <h3 className="text-lg font-bold text-white mb-2">{evt.title}</h3>
-                <p className="text-sm text-brandText-secondary leading-relaxed mb-6">
-                  {evt.description}
-                </p>
-              </div>
+                <div className="pt-4 border-t border-white/10 flex items-center justify-between mt-4">
+                  <a
+                    href="#ubicacion"
+                    className="text-xs font-bold text-slate-300 hover:text-cyan-electric flex items-center gap-1 transition-colors"
+                  >
+                    <span>Cómo llegar</span>
+                    <MapPin className="w-3 h-3 text-cyan-electric" />
+                  </a>
 
-              <a
-                href="#primera-visita"
-                className="text-xs font-bold text-cyan-electric hover:text-white flex items-center gap-1 transition-colors"
-              >
-                <span>Más información</span>
-                <span>&rarr;</span>
-              </a>
-            </div>
+                  <Link
+                    href="/calendario"
+                    className="text-xs font-bold text-cyan-electric hover:underline flex items-center gap-1"
+                  >
+                    <span>Detalles</span>
+                    <span>&rarr;</span>
+                  </Link>
+                </div>
+              </div>
+            </article>
           ))}
+        </div>
+
+        {/* Bottom Banner */}
+        <div className="rounded-2xl glass-panel p-5 text-center border border-cyan-electric/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-left">
+            <span className="text-xs font-bold text-white block">
+              ¿Quieres consultar todas las actividades de agosto a diciembre de 2026?
+            </span>
+            <span className="text-[11px] text-brandText-muted">
+              Santa Cena mensual, Aniversario, Encuentros, Capacitación y Congreso anual.
+            </span>
+          </div>
+
+          <Link
+            href="/calendario"
+            className="px-6 py-2.5 rounded-full text-xs font-extrabold bg-cyan-electric text-void hover:bg-white transition-all shadow-cyanGlow shrink-0"
+          >
+            Explorar Calendario de la Iglesia
+          </Link>
         </div>
       </div>
     </section>
   );
 };
+

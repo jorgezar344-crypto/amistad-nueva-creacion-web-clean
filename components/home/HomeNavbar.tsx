@@ -26,6 +26,7 @@ export const HomeNavbar: React.FC<HomeNavbarProps> = ({ onOpenVisitModal }) => {
     { label: 'Primera Visita', href: '#primera-visita' },
     { label: 'Nuestra Iglesia', href: '#nuestra-iglesia' },
     { label: 'Reuniones', href: '#reuniones' },
+    { label: 'Eventos', href: '#eventos' },
     { label: 'Mensajes', href: '#mensajes' },
     { label: 'Los 9 Pasos', href: '#los-9-pasos-preview', highlight: true },
     { label: 'Ubicación', href: '#ubicacion' },
