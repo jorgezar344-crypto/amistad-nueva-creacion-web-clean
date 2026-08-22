@@ -55,46 +55,61 @@ export const FullHeroHeartScene: React.FC<FullHeroHeartSceneProps> = ({
       const isTablet = w >= 768 && w < 1024;
       const isShortScreen = h < 700;
 
-      let targetScale = 1.02;
+      let targetScaleX = 1.02;
+      let targetScaleY = 1.02;
+      let targetScaleZ = 1.02;
       let targetOffsetX = 3.0;
       let targetOffsetY = 0.15;
 
       if (isMobile) {
-        // ENVELOPING MOBILE HEART: ~115% - 130% of viewport width
+        // SURGICAL SLIM & TALL MOBILE HEART: Contained within 92%-95% of viewport width
         // Base cardioide geometry is 7.04 world units wide.
         // Visible world width at Z=14.5 is ~10.555 * aspect.
         const visibleWorldWidth = 10.555 * aspect;
 
         if (h <= 600) {
-          // 320x568 / ultra compact: 110% of visible width
-          targetScale = THREE.MathUtils.clamp((visibleWorldWidth * 1.10) / 7.04, 0.72, 0.80);
-          targetOffsetY = 0.85; // Raised behind headline
+          // 320x568 / ultra compact: 90% of screen width, balanced height
+          const scaleX = (visibleWorldWidth * 0.90) / 7.04;
+          targetScaleX = scaleX;
+          targetScaleY = scaleX * 1.00;
+          targetOffsetY = 0.45;
         } else if (h <= 700) {
-          // 375x667 / iPhone SE: 115% of visible width
-          targetScale = THREE.MathUtils.clamp((visibleWorldWidth * 1.15) / 7.04, 0.78, 0.86);
-          targetOffsetY = 0.95; // Raised behind headline
+          // 375x667 / iPhone SE: 92% of screen width, slightly elongated
+          const scaleX = (visibleWorldWidth * 0.92) / 7.04;
+          targetScaleX = scaleX;
+          targetScaleY = scaleX * 1.08;
+          targetOffsetY = 0.55;
         } else if (h <= 820) {
-          // 360x800, 375x812: 122% of visible width
-          targetScale = THREE.MathUtils.clamp((visibleWorldWidth * 1.22) / 7.04, 0.82, 0.90);
-          targetOffsetY = 1.10; // Embracing headline
+          // 360x800, 375x812: 94% of screen width, elongated vertical
+          const scaleX = (visibleWorldWidth * 0.94) / 7.04;
+          targetScaleX = scaleX;
+          targetScaleY = scaleX * 1.36;
+          targetOffsetY = 0.75;
         } else {
-          // 390x844, 430x932 (Tall flagships): 126% of visible width
-          targetScale = THREE.MathUtils.clamp((visibleWorldWidth * 1.26) / 7.04, 0.85, 0.94);
-          targetOffsetY = 1.20; // Embracing headline
+          // 390x844, 430x932 (Tall flagships): 94% of screen width, elegant tall heart
+          const scaleX = (visibleWorldWidth * 0.94) / 7.04;
+          targetScaleX = scaleX;
+          targetScaleY = scaleX * 1.40;
+          targetOffsetY = 0.80;
         }
-        targetOffsetX = 0.0; // Centered on mobile
+        targetScaleZ = (targetScaleX + targetScaleY) * 0.5;
+        targetOffsetX = 0.0; // Centered horizontally
       } else if (isTablet) {
-        targetScale = 0.82;
+        targetScaleX = 0.82;
+        targetScaleY = 0.82;
+        targetScaleZ = 0.82;
         targetOffsetX = 1.8;
         targetOffsetY = 0.0;
       } else {
         // Desktop (100% UNCHANGED)
-        targetScale = 1.02;
+        targetScaleX = 1.02;
+        targetScaleY = 1.02;
+        targetScaleZ = 1.02;
         targetOffsetX = 3.0;
         targetOffsetY = 0.15;
       }
 
-      return { targetScale, targetOffsetX, targetOffsetY, isMobile, isTablet, isShortScreen, aspect };
+      return { targetScaleX, targetScaleY, targetScaleZ, targetOffsetX, targetOffsetY, isMobile, isTablet, isShortScreen, aspect };
     }
 
     const initialLayout = getResponsiveLayout(initialWidth, initialHeight);
@@ -130,7 +145,7 @@ export const FullHeroHeartScene: React.FC<FullHeroHeartSceneProps> = ({
     // Heart Anchor: Positioned at Center-Right on Desktop, Centered-Lower on Mobile
     const heartGroup = new THREE.Group();
     heartGroup.position.set(initialLayout.targetOffsetX, initialLayout.targetOffsetY, 0);
-    heartGroup.scale.set(initialLayout.targetScale, initialLayout.targetScale, initialLayout.targetScale);
+    heartGroup.scale.set(initialLayout.targetScaleX, initialLayout.targetScaleY, initialLayout.targetScaleZ);
     rootGroup.add(heartGroup);
 
     // Multi-Layer Subgroups
@@ -625,7 +640,7 @@ export const FullHeroHeartScene: React.FC<FullHeroHeartSceneProps> = ({
       renderer.setSize(w, h);
 
       heartGroup.position.set(newLayout.targetOffsetX, newLayout.targetOffsetY, 0);
-      heartGroup.scale.set(newLayout.targetScale, newLayout.targetScale, newLayout.targetScale);
+      heartGroup.scale.set(newLayout.targetScaleX, newLayout.targetScaleY, newLayout.targetScaleZ);
     };
     window.addEventListener('resize', onResize);
 
@@ -721,8 +736,10 @@ export const FullHeroHeartScene: React.FC<FullHeroHeartSceneProps> = ({
         }
       }
 
-      const currentScale = layoutRef.current.targetScale;
-      heartGroup.scale.set(currentScale * pulseScale, currentScale * pulseScale, currentScale);
+      const curScaleX = layoutRef.current.targetScaleX;
+      const curScaleY = layoutRef.current.targetScaleY;
+      const curScaleZ = layoutRef.current.targetScaleZ;
+      heartGroup.scale.set(curScaleX * pulseScale, curScaleY * pulseScale, curScaleZ);
       apexSprite.scale.set(0.55 * pulseLuminance, 0.55 * pulseLuminance, 1);
       haloLine.scale.set(1.0 + (pulseScale - 1.0) * 0.8, 1.0 + (pulseScale - 1.0) * 0.8, 1);
 
