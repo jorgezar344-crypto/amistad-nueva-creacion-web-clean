@@ -51,6 +51,8 @@ export const HomeHero: React.FC<HomeHeroProps> = ({ onOpenVisitModal }) => {
         />
         {/* Mobile Vertical Gradient Vignette: Crisp Top Text -> Visible Mid Stage/Heart -> Smooth Bottom Fade */}
         <div className="absolute inset-0 bg-gradient-to-b from-void/90 via-void/45 to-void/90 lg:hidden"></div>
+        {/* Mobile Central Focal Contrast Pocket (Behind Enveloping Text) */}
+        <div className="absolute top-[28%] left-1/2 -translate-x-1/2 w-[340px] sm:w-[420px] h-[340px] sm:h-[420px] bg-void/50 rounded-full blur-[80px] pointer-events-none lg:hidden"></div>
         {/* Desktop Filmic Directional Gradient: 85% Dark on Left -> 35-50% in Center -> Transparent on Right */}
         <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-void via-void/75 to-transparent"></div>
         <div className="hidden lg:block absolute inset-0 bg-gradient-to-t from-void via-transparent to-void/50"></div>

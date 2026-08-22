@@ -60,26 +60,35 @@ export const FullHeroHeartScene: React.FC<FullHeroHeartSceneProps> = ({
       let targetOffsetY = 0.15;
 
       if (isMobile) {
-        // Precise Mobile Scale: Responsive clamping for 320px to 430px+
-        const widthFactor = THREE.MathUtils.clamp(w / 390, 0.82, 1.10);
-        targetScale = (isShortScreen ? 0.35 : 0.39) * widthFactor;
-        targetOffsetX = 0.0; // Centered on mobile
+        // ENVELOPING MOBILE HEART: ~115% - 130% of viewport width
+        // Base cardioide geometry is 7.04 world units wide.
+        // Visible world width at Z=14.5 is ~10.555 * aspect.
+        const visibleWorldWidth = 10.555 * aspect;
 
         if (h <= 600) {
-          targetOffsetY = -2.35; // 320x568 / ultra-compact
+          // 320x568 / ultra compact: 110% of visible width
+          targetScale = THREE.MathUtils.clamp((visibleWorldWidth * 1.10) / 7.04, 0.72, 0.80);
+          targetOffsetY = 0.85; // Raised behind headline
         } else if (h <= 700) {
-          targetOffsetY = -2.15; // 375x667 / iPhone SE
+          // 375x667 / iPhone SE: 115% of visible width
+          targetScale = THREE.MathUtils.clamp((visibleWorldWidth * 1.15) / 7.04, 0.78, 0.86);
+          targetOffsetY = 0.95; // Raised behind headline
         } else if (h <= 820) {
-          targetOffsetY = -1.90; // 360x800, 375x812
+          // 360x800, 375x812: 122% of visible width
+          targetScale = THREE.MathUtils.clamp((visibleWorldWidth * 1.22) / 7.04, 0.82, 0.90);
+          targetOffsetY = 1.10; // Embracing headline
         } else {
-          targetOffsetY = -1.75; // 390x844, 430x932
+          // 390x844, 430x932 (Tall flagships): 126% of visible width
+          targetScale = THREE.MathUtils.clamp((visibleWorldWidth * 1.26) / 7.04, 0.85, 0.94);
+          targetOffsetY = 1.20; // Embracing headline
         }
+        targetOffsetX = 0.0; // Centered on mobile
       } else if (isTablet) {
-        targetScale = 0.76;
-        targetOffsetX = 1.6;
-        targetOffsetY = -0.3;
+        targetScale = 0.82;
+        targetOffsetX = 1.8;
+        targetOffsetY = 0.0;
       } else {
-        // Desktop
+        // Desktop (100% UNCHANGED)
         targetScale = 1.02;
         targetOffsetX = 3.0;
         targetOffsetY = 0.15;
@@ -873,10 +882,11 @@ export const FullHeroHeartScene: React.FC<FullHeroHeartSceneProps> = ({
         // Text Safe-Area Density & Exclusion
         let localAlpha = d.baseAlpha * globalAlpha;
         if (layoutRef.current.isMobile) {
-          // Mobile: Upper center region containing headline & CTAs (y > 0.1 && y < 4.0)
-          if (d.y > 0.1 && d.y < 4.0) {
-            localAlpha *= 0.16;
-            d.y += (d.y > 2.0 ? 0.003 : -0.003) * 60 * delta;
+          // Mobile: Central headline envelope pocket (x in [-1.5, 1.5] && y in [0.4, 2.8])
+          if (Math.abs(d.x) < 1.5 && d.y > 0.4 && d.y < 2.8) {
+            localAlpha *= 0.10;
+            // Softly drift particles outward towards the lobes and perimeter
+            d.x += (d.x > 0 ? 0.0025 : -0.0025) * 60 * delta;
           }
         } else {
           // Desktop: Left zone containing copy (x < -1.2 && y > -2.0 && y < 3.0)
