@@ -43,15 +43,61 @@ export const FullHeroHeartScene: React.FC<FullHeroHeartSceneProps> = ({
     }
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isMobile = window.innerWidth < 768;
-    const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
-    const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2.0);
+    const initialWidth = container.clientWidth || window.innerWidth;
+    const initialHeight = container.clientHeight || window.innerHeight;
+    const isMobileInitial = initialWidth < 768;
+    const dpr = Math.min(window.devicePixelRatio || 1, isMobileInitial ? 1.5 : 2.0);
+
+    // Dynamic responsive parameters calculator based on viewport dimensions
+    function getResponsiveLayout(w: number, h: number) {
+      const aspect = w / h;
+      const isMobile = w < 768;
+      const isTablet = w >= 768 && w < 1024;
+      const isShortScreen = h < 700;
+
+      let targetScale = 1.02;
+      let targetOffsetX = 3.0;
+      let targetOffsetY = 0.15;
+
+      if (isMobile) {
+        // Precise Mobile Scale: Responsive clamping for 320px to 430px+
+        const widthFactor = THREE.MathUtils.clamp(w / 390, 0.82, 1.10);
+        targetScale = (isShortScreen ? 0.35 : 0.39) * widthFactor;
+        targetOffsetX = 0.0; // Centered on mobile
+
+        if (h <= 600) {
+          targetOffsetY = -2.35; // 320x568 / ultra-compact
+        } else if (h <= 700) {
+          targetOffsetY = -2.15; // 375x667 / iPhone SE
+        } else if (h <= 820) {
+          targetOffsetY = -1.90; // 360x800, 375x812
+        } else {
+          targetOffsetY = -1.75; // 390x844, 430x932
+        }
+      } else if (isTablet) {
+        targetScale = 0.76;
+        targetOffsetX = 1.6;
+        targetOffsetY = -0.3;
+      } else {
+        // Desktop
+        targetScale = 1.02;
+        targetOffsetX = 3.0;
+        targetOffsetY = 0.15;
+      }
+
+      return { targetScale, targetOffsetX, targetOffsetY, isMobile, isTablet, isShortScreen, aspect };
+    }
+
+    const initialLayout = getResponsiveLayout(initialWidth, initialHeight);
+    const layoutRef = { current: initialLayout };
+    const isMobile = initialLayout.isMobile;
+    const isTablet = initialLayout.isTablet;
 
     // 1. Scene & Perspective Camera covering entire screen
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
       40,
-      container.clientWidth / container.clientHeight,
+      initialLayout.aspect,
       0.1,
       100
     );
@@ -59,12 +105,12 @@ export const FullHeroHeartScene: React.FC<FullHeroHeartSceneProps> = ({
 
     // 2. Renderer
     const renderer = new THREE.WebGLRenderer({
-      antialias: !isMobile,
+      antialias: !initialLayout.isMobile,
       alpha: true,
       powerPreference: 'high-performance',
     });
     renderer.setPixelRatio(dpr);
-    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setSize(initialWidth, initialHeight);
     renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
 
@@ -74,12 +120,8 @@ export const FullHeroHeartScene: React.FC<FullHeroHeartSceneProps> = ({
 
     // Heart Anchor: Positioned at Center-Right on Desktop, Centered-Lower on Mobile
     const heartGroup = new THREE.Group();
-    const heartOffsetX = isMobile ? 0.0 : isTablet ? 1.8 : 3.0;
-    const heartOffsetY = isMobile ? -1.3 : isTablet ? -0.4 : 0.15;
-    const heartBaseScale = isMobile ? 0.72 : isTablet ? 0.88 : 1.02;
-
-    heartGroup.position.set(heartOffsetX, heartOffsetY, 0);
-    heartGroup.scale.set(heartBaseScale, heartBaseScale, heartBaseScale);
+    heartGroup.position.set(initialLayout.targetOffsetX, initialLayout.targetOffsetY, 0);
+    heartGroup.scale.set(initialLayout.targetScale, initialLayout.targetScale, initialLayout.targetScale);
     rootGroup.add(heartGroup);
 
     // Multi-Layer Subgroups
@@ -376,8 +418,8 @@ export const FullHeroHeartScene: React.FC<FullHeroHeartSceneProps> = ({
       const t = Math.random() * Math.PI * 2;
       const birthPt = getHeartPoint(t, 0.22, (Math.random() - 0.5) * 0.3);
       // World birth position (taking heart offset into account)
-      const worldX = birthPt.x + heartOffsetX;
-      const worldY = birthPt.y + heartOffsetY;
+      const worldX = birthPt.x + initialLayout.targetOffsetX;
+      const worldY = birthPt.y + initialLayout.targetOffsetY;
       const worldZ = birthPt.z;
 
       const angle = Math.atan2(birthPt.y, birthPt.x) + (Math.random() - 0.5) * 1.2;
@@ -536,7 +578,7 @@ export const FullHeroHeartScene: React.FC<FullHeroHeartSceneProps> = ({
     };
 
     const onMouseMove = (e: MouseEvent) => {
-      if (!enableMouseInteraction || prefersReducedMotion) return;
+      if (!enableMouseInteraction || layoutRef.current.isMobile) return;
       const rect = container.getBoundingClientRect();
       const ndcX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       const ndcY = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
@@ -564,9 +606,17 @@ export const FullHeroHeartScene: React.FC<FullHeroHeartSceneProps> = ({
 
     const onResize = () => {
       if (!container) return;
-      camera.aspect = container.clientWidth / container.clientHeight;
+      const w = container.clientWidth || window.innerWidth;
+      const h = container.clientHeight || window.innerHeight;
+      const newLayout = getResponsiveLayout(w, h);
+      layoutRef.current = newLayout;
+
+      camera.aspect = newLayout.aspect;
       camera.updateProjectionMatrix();
-      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setSize(w, h);
+
+      heartGroup.position.set(newLayout.targetOffsetX, newLayout.targetOffsetY, 0);
+      heartGroup.scale.set(newLayout.targetScale, newLayout.targetScale, newLayout.targetScale);
     };
     window.addEventListener('resize', onResize);
 
@@ -662,7 +712,8 @@ export const FullHeroHeartScene: React.FC<FullHeroHeartSceneProps> = ({
         }
       }
 
-      heartGroup.scale.set(heartBaseScale * pulseScale, heartBaseScale * pulseScale, heartBaseScale);
+      const currentScale = layoutRef.current.targetScale;
+      heartGroup.scale.set(currentScale * pulseScale, currentScale * pulseScale, currentScale);
       apexSprite.scale.set(0.55 * pulseLuminance, 0.55 * pulseLuminance, 1);
       haloLine.scale.set(1.0 + (pulseScale - 1.0) * 0.8, 1.0 + (pulseScale - 1.0) * 0.8, 1);
 
@@ -680,7 +731,7 @@ export const FullHeroHeartScene: React.FC<FullHeroHeartSceneProps> = ({
       // --- 3. Animate Volumetric Light Ribbon ---
       const ribbonPosArr = (ribbonGeom.attributes.position as THREE.BufferAttribute).array as Float32Array;
       const ribbonColArr = (ribbonGeom.attributes.color as THREE.BufferAttribute).array as Float32Array;
-      const halfWidth = 0.08 * (isMobile ? 0.8 : 1.0);
+      const halfWidth = 0.08 * (layoutRef.current.isMobile ? 0.75 : 1.0);
 
       for (let i = 0; i <= ribbonSegments; i++) {
         const t = (i / ribbonSegments) * Math.PI * 2;
@@ -690,9 +741,9 @@ export const FullHeroHeartScene: React.FC<FullHeroHeartSceneProps> = ({
         let hotIntensity = 0.0;
         energyPackets.forEach((ep) => {
           const diff = Math.abs(t - ep.t);
-          const circDiff = Math.min(diff, Math.PI * 2 - diff);
-          if (circDiff < ep.width) {
-            hotIntensity = Math.max(hotIntensity, 1.0 - circDiff / ep.width);
+          const circDist = Math.min(diff, Math.PI * 2 - diff);
+          if (circDist < ep.width) {
+            hotIntensity = Math.max(hotIntensity, (1 - circDist / ep.width) * 1.3);
           }
         });
 
@@ -758,7 +809,7 @@ export const FullHeroHeartScene: React.FC<FullHeroHeartSceneProps> = ({
 
           const px = originPt.x + cfg.dir.x * reach + wiggle;
           const py = originPt.y + cfg.dir.y * reach + wiggle * 0.5;
-          const pz = originPt.z + cfg.dir.z * reach + wiggle * 0.7;
+          const pz = originPt.z + cfg.dir.z * reach;
 
           pos[i * 3] = px;
           pos[i * 3 + 1] = py;
@@ -769,18 +820,17 @@ export const FullHeroHeartScene: React.FC<FullHeroHeartSceneProps> = ({
 
       // --- 6. Animate Heart-Bound Flow Particles ---
       const heartFlowPosArr = (heartFlowGeom.attributes.position as THREE.BufferAttribute).array as Float32Array;
+      const speedMultiplier = burstEmission ? 2.4 : 1.0;
+
       for (let i = 0; i < heartFlowCount; i++) {
-        heartFlowT[i] += heartFlowSpeed[i] * delta * 0.38;
+        heartFlowT[i] += delta * heartFlowSpeed[i] * speedMultiplier;
+        if (heartFlowT[i] > Math.PI * 2) heartFlowT[i] -= Math.PI * 2;
+        if (heartFlowT[i] < 0) heartFlowT[i] += Math.PI * 2;
+
         const t = heartFlowT[i];
-        const fIdx = heartFlowFilamentIdx[i];
-        const cfg = filamentConfigs[fIdx];
-
-        const distFromApex = Math.abs(t - Math.PI);
-        const waveReach = Math.max(0, 1.0 - Math.abs(distFromApex - waveProgress * Math.PI));
-        const dynamicSpread = cfg.rBase + waveReach * 0.010;
-
-        const weaveZ = Math.cos(t * 3.5 + cfg.phase + elapsedTime * 1.5) * 0.12;
-        const pt = getHeartPoint(t, 0.22 * dynamicSpread, cfg.zBase + weaveZ + heartFlowScatter[i * 3 + 2], asymmetry);
+        const fIdx = Math.floor(heartFlowFilamentIdx[i]);
+        const cfg = filamentConfigs[fIdx] || filamentConfigs[0];
+        const pt = getHeartPoint(t, 0.22 * cfg.rBase, cfg.zBase + heartFlowScatter[i * 3 + 2], asymmetry);
 
         heartFlowPosArr[i * 3] = pt.x + heartFlowScatter[i * 3];
         heartFlowPosArr[i * 3 + 1] = pt.y + heartFlowScatter[i * 3 + 1];
@@ -788,10 +838,9 @@ export const FullHeroHeartScene: React.FC<FullHeroHeartSceneProps> = ({
       }
       heartFlowGeom.attributes.position.needsUpdate = true;
 
-      // --- 7. Animate Full-Hero Emanating Particle Field with Screen-Wide Mouse Force Field ---
+      // --- 7. Animate Full-Hero Emanating Particles (Nuclear Heart Field) ---
       const heroFieldPosArr = (heroFieldGeom.attributes.position as THREE.BufferAttribute).array as Float32Array;
       const heroFieldColArr = (heroFieldGeom.attributes.color as THREE.BufferAttribute).array as Float32Array;
-      const speedMultiplier = simulatedState === 'particle-field' ? 1.6 : 1.0;
 
       const forceRadius = 2.2; // ~180px in world space
       const forceRadiusSq = forceRadius * forceRadius;
@@ -805,8 +854,8 @@ export const FullHeroHeartScene: React.FC<FullHeroHeartSceneProps> = ({
           d.life = 0;
           d.tBirth = Math.random() * Math.PI * 2;
           const birthPt = getHeartPoint(d.tBirth, 0.22, (Math.random() - 0.5) * 0.3, asymmetry);
-          d.x = birthPt.x + heartOffsetX;
-          d.y = birthPt.y + heartOffsetY;
+          d.x = birthPt.x + layoutRef.current.targetOffsetX;
+          d.y = birthPt.y + layoutRef.current.targetOffsetY;
           d.z = birthPt.z;
 
           const angle = Math.atan2(birthPt.y, birthPt.x) + (Math.random() - 0.5) * 1.3;
@@ -821,13 +870,20 @@ export const FullHeroHeartScene: React.FC<FullHeroHeartSceneProps> = ({
           d.z += d.vz * 60 * delta;
         }
 
-        // Text Safe-Area Density & Exclusion (Left zone: x < -1.2)
+        // Text Safe-Area Density & Exclusion
         let localAlpha = d.baseAlpha * globalAlpha;
-        if (d.x < -1.2 && d.y > -2.0 && d.y < 3.0) {
-          // Attenuate opacity to 20% in copy zone to prevent visual noise
-          localAlpha *= 0.22;
-          // Softly guide particles upward/downward away from headline
-          d.y += (d.y > 0.5 ? 0.003 : -0.003) * 60 * delta;
+        if (layoutRef.current.isMobile) {
+          // Mobile: Upper center region containing headline & CTAs (y > 0.1 && y < 4.0)
+          if (d.y > 0.1 && d.y < 4.0) {
+            localAlpha *= 0.16;
+            d.y += (d.y > 2.0 ? 0.003 : -0.003) * 60 * delta;
+          }
+        } else {
+          // Desktop: Left zone containing copy (x < -1.2 && y > -2.0 && y < 3.0)
+          if (d.x < -1.2 && d.y > -2.0 && d.y < 3.0) {
+            localAlpha *= 0.22;
+            d.y += (d.y > 0.5 ? 0.003 : -0.003) * 60 * delta;
+          }
         }
 
         // Full-Screen Mouse Force Field Repulsion & Velocity Wake

@@ -27,13 +27,13 @@ export default function ChurchHomePage() {
       <div className="relative z-10">
         <HomeHero onOpenVisitModal={() => setVisitModalOpen(true)} />
 
+        <SermonSection />
+
         <FirstVisitSection onOpenVisitModal={() => setVisitModalOpen(true)} />
 
         <OurChurchSection />
 
         <ScheduleSection />
-
-        <SermonSection />
 
         <EventsSection />
 
