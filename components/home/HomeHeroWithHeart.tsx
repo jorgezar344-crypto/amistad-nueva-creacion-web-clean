@@ -5,7 +5,7 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { HeartHandshake, Play, MapPin, Sparkles } from '../icons/Icons';
 
-// Dynamic progressive enhancement for Full-Hero Three.js Canvas without blocking LCP
+// Dynamic progressive enhancement for Full-Hero Three.js Canvas
 const FullHeroHeartScene = dynamic(
   () => import('../3d/FullHeroHeartScene').then((mod) => mod.FullHeroHeartScene),
   {
@@ -18,11 +18,15 @@ const FullHeroHeartScene = dynamic(
   }
 );
 
-interface HomeHeroProps {
-  onOpenVisitModal: () => void;
+interface HomeHeroWithHeartProps {
+  onOpenVisitModal?: () => void;
+  simulatedState?: any;
 }
 
-export const HomeHero: React.FC<HomeHeroProps> = ({ onOpenVisitModal }) => {
+export const HomeHeroWithHeart: React.FC<HomeHeroWithHeartProps> = ({
+  onOpenVisitModal,
+  simulatedState = 'auto',
+}) => {
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -67,11 +71,11 @@ export const HomeHero: React.FC<HomeHeroProps> = ({ onOpenVisitModal }) => {
       >
         <FullHeroHeartScene
           enableMouseInteraction={true}
-          simulatedState="auto"
+          simulatedState={simulatedState}
         />
       </div>
 
-      {/* 3. EDITORIAL COPY & CTAs (Left Column - Completely Static Texts & Full Interactivity) */}
+      {/* 3. EDITORIAL COPY & CTAs (Left Column - 100% Clickable & High Contrast) */}
       <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center z-20 pointer-events-none">
         <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left pt-2 lg:pt-0 pointer-events-auto">
           {/* Location Badge */}
@@ -88,7 +92,7 @@ export const HomeHero: React.FC<HomeHeroProps> = ({ onOpenVisitModal }) => {
             </h2>
           </div>
 
-          {/* Main Headline: 3-Line Poetic Breakdown */}
+          {/* Main Headline: 3-Line Poetic Breakdown with Text Safe Shadow */}
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white leading-[1.05] mb-6 drop-shadow-lg">
             Hay un nuevo<br />
             <span className="text-gradient-cyan">comienzo</span><br />
@@ -134,4 +138,5 @@ export const HomeHero: React.FC<HomeHeroProps> = ({ onOpenVisitModal }) => {
     </section>
   );
 };
+
 

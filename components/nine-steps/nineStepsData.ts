@@ -90,7 +90,7 @@ export const NINE_STEPS: StepData[] = [
     iconType: 'Users',
     primaryCtaText: 'Ver horarios de reuniones',
     primaryCtaAction: 'VISIT',
-    whatsappMessage: 'Hola, quisiera planear mi asistencia a la reunión dominical de las 11:30 AM.',
+    whatsappMessage: 'Hola, quisiera planear mi asistencia a una de sus reuniones dominicales.',
   },
   {
     number: '05',

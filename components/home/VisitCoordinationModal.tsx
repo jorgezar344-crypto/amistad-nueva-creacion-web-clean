@@ -42,7 +42,7 @@ export const VisitCoordinationModal: React.FC<VisitCoordinationModalProps> = ({
         </h3>
 
         <p className="text-sm text-brandText-secondary leading-relaxed mb-6">
-          Nuestras reuniones dominicales son a las <strong>11:30 AM</strong> en Camino a Lourdes Km 1, Amanecer Balvanera, Corregidora, Qro.
+          Nuestras reuniones dominicales son a las <strong>9:00 a.m., 11:30 a.m. y 6:00 p.m.</strong> en Camino a Lourdes Km 1, Amanecer Balvanera, Corregidora, Qro.
         </p>
 
         <div className="space-y-2.5 mb-6 text-xs text-brandText-secondary">

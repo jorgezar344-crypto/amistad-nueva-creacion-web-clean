@@ -7,18 +7,23 @@ import { Calendar, Clock, MapPin, Sparkles } from '../icons/Icons';
 export const ScheduleSection: React.FC = () => {
   const schedules = [
     {
-      badge: 'DOMINGO',
-      time: '11:30 AM',
-      name: 'Reunión General de Adoración y Palabra',
-      desc: 'Celebración dominical familiar con música de alabanza en vivo, predicación expositiva y clases dinámicas para niños.',
+      badge: 'DOMINGOS • 3 REUNIONES',
+      time: '9:00 a.m. • 11:30 a.m. • 6:00 p.m.',
+      times: [
+        { label: '1ª Reunión', time: '9:00 a.m. – 11:00 a.m.' },
+        { label: '2ª Reunión', time: '11:30 a.m. – 2:00 p.m.' },
+        { label: '3ª Reunión', time: '6:00 p.m. – 8:00 p.m.' },
+      ],
+      name: 'Reuniones Dominicales de Adoración y Palabra',
+      desc: 'Tres reuniones dominicales con alabanza en vivo, enseñanza bíblica y clases dinámicas para niños.',
       image: '/images/real-church-auditorium.png',
       highlight: true,
     },
     {
-      badge: 'JUEVES',
-      time: '8:00 PM',
-      name: 'Discipulado y Estudio Bíblico',
-      desc: 'Espacio de profundización en las Escrituras para fortalecer la vida espiritual, orar juntos y crecer en el conocimiento de Dios.',
+      badge: 'VIERNES',
+      time: 'Horario por confirmar',
+      name: 'Reunión de Oración',
+      desc: 'Todos los viernes nos unimos para buscar a Dios e interceder juntos. El último viernes de cada mes celebramos Santa Cena (traer alimentos para compartir).',
       image: null,
       highlight: false,
     },
@@ -107,9 +112,20 @@ export const ScheduleSection: React.FC = () => {
                   )}
 
                   <h3 className="text-xl font-bold text-white mb-3">{item.name}</h3>
-                  <p className="text-sm text-brandText-secondary leading-relaxed mb-6">
+                  <p className="text-sm text-brandText-secondary leading-relaxed mb-4">
                     {item.desc}
                   </p>
+
+                  {item.times && (
+                    <div className="space-y-1.5 mb-4 bg-void/60 p-3 rounded-2xl border border-white/5">
+                      {item.times.map((t, tIdx) => (
+                        <div key={tIdx} className="flex items-center justify-between text-xs">
+                          <span className="font-bold text-cyan-electric">{t.label}:</span>
+                          <span className="text-white font-medium">{t.time}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <div className="pt-4 border-t border-white/5 flex items-center justify-between text-xs text-brandText-muted">

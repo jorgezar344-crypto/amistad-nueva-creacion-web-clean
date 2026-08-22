@@ -45,7 +45,7 @@ export const LocationSection: React.FC = () => {
               <div className="space-y-3 mb-8 text-xs text-brandText-secondary">
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4 text-cyan-electric shrink-0" />
-                  <span>Servicio dominical: Domingos a las 11:30 AM</span>
+                  <span>Reuniones dominicales: 9:00 a.m., 11:30 a.m. y 6:00 p.m.</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Navigation className="w-4 h-4 text-cyan-electric shrink-0" />
