@@ -32,6 +32,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
+        serif: ['var(--font-serif)', 'Playfair Display', 'Georgia', 'serif'],
       },
       boxShadow: {
         cyanGlow: '0 0 25px rgba(0, 229, 255, 0.25)',
