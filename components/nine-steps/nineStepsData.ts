@@ -170,9 +170,9 @@ export const NINE_STEPS: StepData[] = [
     chapter: 3,
     chapterName: 'Capítulo III: Vivir y Servir',
     name: 'Reencuentro',
-    subtitle: 'Renovación y madurez espiritual continua',
-    description: 'Una segunda etapa de retiro intencional después del Encuentro para profundizar en el liderazgo espiritual, renovar la visión y afirmarse en el llamado de Dios.',
-    detailedText: 'El Reencuentro te prepara para liderar con sabiduría, ser mentor de otros creyentes y mantener encendido el fervor del primer amor a lo largo de los años.',
+    subtitle: 'Profundizar, fortalecer y continuar',
+    description: 'El Reencuentro es una segunda etapa después del Encuentro. Es un tiempo para volver a buscar a Dios de manera intencional, profundizar en lo aprendido, fortalecer áreas de la vida espiritual y continuar el proceso de crecimiento y restauración.',
+    detailedText: 'En esta segunda etapa, el énfasis está en fortalecer áreas de la vida espiritual y dar continuidad al proceso de crecimiento y restauración iniciado en el Encuentro.',
     verseRef: 'Filipenses 1:6',
     verseText: 'Estando persuadido de esto, que el que comenzó en vosotros la buena obra, la perfeccionará hasta el día de Jesucristo.',
     colorAccent: '#00E5FF',
@@ -183,4 +183,3 @@ export const NINE_STEPS: StepData[] = [
     whatsappMessage: 'Hola, me gustaría saber cuándo será el próximo retiro de Reencuentro.',
   },
 ];
-

@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
-import { X, Sparkles, HeartHandshake, MessageCircle, CheckCircle2 } from '../icons/Icons';
+import React, { useEffect, useId, useRef } from 'react';
+import { X, HeartHandshake, MessageCircle, CheckCircle2 } from '../icons/Icons';
 
 interface VisitCoordinationModalProps {
   isOpen: boolean;
@@ -12,18 +12,118 @@ export const VisitCoordinationModal: React.FC<VisitCoordinationModalProps> = ({
   isOpen,
   onClose,
 }) => {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+  const restoreFocusFrameRef = useRef<number | null>(null);
+  const onCloseRef = useRef(onClose);
+  const titleId = useId();
+  const descriptionId = useId();
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    if (restoreFocusFrameRef.current !== null) {
+      window.cancelAnimationFrame(restoreFocusFrameRef.current);
+      restoreFocusFrameRef.current = null;
+    }
+
+    if (!dialogRef.current?.contains(document.activeElement)) {
+      previousFocusRef.current =
+        document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    const previousPaddingRight = document.body.style.paddingRight;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+    document.body.style.overflow = 'hidden';
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+
+    closeButtonRef.current?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        event.stopPropagation();
+        onCloseRef.current();
+        return;
+      }
+
+      if (event.key !== 'Tab' || !dialogRef.current) return;
+
+      const focusableElements = Array.from(
+        dialogRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter((element) => !element.hasAttribute('hidden'));
+
+      if (focusableElements.length === 0) {
+        event.preventDefault();
+        dialogRef.current.focus();
+        return;
+      }
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (!dialogRef.current.contains(document.activeElement)) {
+        event.preventDefault();
+        firstElement.focus();
+      } else if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+      document.body.style.paddingRight = previousPaddingRight;
+
+      const previousFocus = previousFocusRef.current;
+      if (previousFocus?.isConnected) {
+        restoreFocusFrameRef.current = window.requestAnimationFrame(() => {
+          previousFocus.focus();
+          restoreFocusFrameRef.current = null;
+        });
+      }
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn"
-      role="dialog"
-      aria-modal="true"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
     >
-      <div className="relative w-full max-w-lg rounded-3xl glass-panel-elevated p-6 sm:p-8 border border-cyan-electric/30 shadow-cyanGlowLg">
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={descriptionId}
+        tabIndex={-1}
+        className="relative w-full max-w-lg max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-3xl glass-panel-elevated p-6 sm:p-8 border border-cyan-electric/30 shadow-cyanGlowLg"
+      >
         <button
+          ref={closeButtonRef}
           onClick={onClose}
-          className="absolute top-5 right-5 w-8 h-8 rounded-full bg-surface-elevated flex items-center justify-center text-brandText-secondary hover:text-white hover:bg-cyan-deep/40 transition-colors focus-visible:ring-2 focus-visible:ring-cyan-electric"
+          className="absolute top-4 right-4 w-11 h-11 rounded-full bg-surface-elevated flex items-center justify-center text-brandText-secondary hover:text-white hover:bg-cyan-deep/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-electric focus-visible:ring-offset-2 focus-visible:ring-offset-void"
           aria-label="Cerrar modal"
         >
           <X className="w-4 h-4" />
@@ -37,11 +137,11 @@ export const VisitCoordinationModal: React.FC<VisitCoordinationModalProps> = ({
           Planear Mi Visita
         </span>
 
-        <h3 className="text-2xl font-bold text-white mb-3">
+        <h3 id={titleId} className="text-2xl font-bold text-white mb-3 pr-10">
           ¡Queremos darte la bienvenida a casa!
         </h3>
 
-        <p className="text-sm text-brandText-secondary leading-relaxed mb-6">
+        <p id={descriptionId} className="text-sm text-brandText-secondary leading-relaxed mb-6">
           Nuestras reuniones dominicales son a las <strong>9:00 a.m., 11:30 a.m. y 6:00 p.m.</strong> en Camino a Lourdes Km 1, Amanecer Balvanera, Corregidora, Qro.
         </p>
 
@@ -73,7 +173,7 @@ export const VisitCoordinationModal: React.FC<VisitCoordinationModalProps> = ({
 
           <button
             onClick={onClose}
-            className="w-full py-2.5 rounded-full text-xs font-semibold text-brandText-secondary hover:text-white"
+            className="w-full min-h-11 py-2.5 rounded-full text-xs font-semibold text-brandText-secondary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-electric"
           >
             Cerrar
           </button>

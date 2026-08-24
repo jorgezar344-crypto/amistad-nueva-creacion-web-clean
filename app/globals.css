@@ -4,9 +4,17 @@
 
 :root {
   --bg-void: #06090E;
+  --bg-ink: #091018;
+  --bg-paper: #F2EEE6;
   --text-primary: #FFFFFF;
-  --text-secondary: #94A3B8;
+  --text-secondary: #B2BCC9;
   --cyan-electric: #00E5FF;
+  --warm-light: #EBCB9B;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.25rem;
 }
 
 body {
@@ -16,6 +24,15 @@ body {
   overflow-x: hidden;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
+
+section[id] {
+  scroll-margin-top: 5.25rem;
+}
+
+::selection {
+  background: rgba(0, 229, 255, 0.3);
+  color: #ffffff;
 }
 
 /* Custom scrollbar */
@@ -43,17 +60,17 @@ body {
 
 /* Utility classes */
 .glass-panel {
-  background: rgba(13, 20, 31, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 229, 255, 0.12);
+  background: rgba(9, 16, 24, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .glass-panel-elevated {
-  background: rgba(21, 32, 48, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 229, 255, 0.22);
+  background: rgba(13, 22, 32, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.11);
 }
 
 .text-gradient-cyan {
@@ -66,4 +83,2120 @@ body {
   background: linear-gradient(180deg, #FFFFFF 0%, #E2E8F0 60%, #00E5FF 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.text-balance { text-wrap: balance; }
+
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn { animation: fadeIn 180ms ease-out both; }
+
+/* Home cinematic hero — isolated from the existing LAB visual language. */
+.home-cinematic-hero {
+  min-height: max(100vh, 760px);
+  min-height: max(100svh, 760px);
+}
+
+.home-cinematic-media-stage {
+  top: 4.75rem;
+  height: clamp(390px, 56vh, 500px);
+  height: clamp(390px, 56svh, 500px);
+  min-height: 0;
+  background: #03070c;
+}
+
+.home-cinematic-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+.home-cinematic-loop-veil {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: #03070c;
+  opacity: 0;
+}
+
+.home-cinematic-hero-content {
+  min-height: max(100vh, 760px);
+  min-height: max(100svh, 760px);
+  padding-top: clamp(22rem, 45vh, 27rem);
+  padding-top: clamp(22rem, 45svh, 27rem);
+  padding-bottom: 3rem;
+}
+
+.home-cinematic-title {
+  font-size: clamp(3.15rem, 14vw, 4.35rem);
+  text-shadow: 0 12px 44px rgba(0, 0, 0, 0.52);
+}
+
+.home-cinematic-visit-card {
+  width: 100%;
+  border-radius: 1.25rem;
+  padding: 1rem 1.1rem;
+}
+
+.home-cinematic-glass {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.018));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 18px 48px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(16px) saturate(135%);
+  -webkit-backdrop-filter: blur(16px) saturate(135%);
+}
+
+.home-cinematic-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.48) 0%, rgba(255, 255, 255, 0.12) 26%, transparent 48%, rgba(0, 229, 255, 0.08) 76%, rgba(255, 255, 255, 0.26) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.home-cinematic-navbar {
+  animation: homeCinematicNavbarReveal 700ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+.home-cinematic-navbar-scrolled {
+  background-color: rgba(3, 8, 13, 0.78);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.13), 0 18px 54px rgba(0, 0, 0, 0.38);
+}
+
+.home-cinematic-kicker,
+.home-cinematic-title,
+.home-cinematic-summary,
+.home-cinematic-actions,
+.home-cinematic-visit-card {
+  animation: homeCinematicContentReveal 760ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+.home-cinematic-title { animation-delay: 80ms; }
+.home-cinematic-summary { animation-delay: 150ms; }
+.home-cinematic-actions { animation-delay: 220ms; }
+.home-cinematic-visit-card { animation-delay: 280ms; }
+
+@keyframes homeCinematicNavbarReveal {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes homeCinematicContentReveal {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 639px) and (max-height: 700px) {
+  .home-cinematic-visit-card { display: none; }
+}
+
+@media (max-width: 359px) {
+  .home-cinematic-title { font-size: 2.85rem; }
+  .home-cinematic-hero-content { padding-top: 20.5rem; }
+}
+
+@media (max-width: 359px) and (max-height: 650px) {
+  .home-cinematic-title { font-size: 2.65rem; }
+  .home-cinematic-hero-content { padding-top: 19rem; }
+  .home-cinematic-summary { display: none; }
+  .home-cinematic-actions a { display: none; }
+}
+
+@media (min-width: 768px) {
+  .home-cinematic-hero {
+    min-height: max(100vh, 720px);
+    min-height: max(100svh, 720px);
+  }
+
+  .home-cinematic-media-stage {
+    inset: 0;
+    height: auto;
+    min-height: 0;
+  }
+
+  .home-cinematic-media {
+    object-position: 50% 50%;
+  }
+
+  .home-cinematic-hero-content {
+    min-height: max(100vh, 720px);
+    min-height: max(100svh, 720px);
+    padding-top: 8.5rem;
+    padding-bottom: 4.5rem;
+  }
+
+  .home-cinematic-title {
+    font-size: clamp(4.65rem, 6.15vw, 6.1rem);
+  }
+
+  .home-cinematic-visit-card {
+    width: min(100%, 370px);
+    padding: 1.15rem 1.25rem;
+  }
+}
+
+/* MotionSites pass 2 — premium storytelling system below the preserved Hero. */
+.home-pass2-reveal-pending {
+  opacity: 0;
+}
+
+.home-pass2-reveal-pending[data-home-reveal='up'] {
+  transform: translate3d(0, 28px, 0);
+}
+
+.home-pass2-reveal-pending[data-home-reveal='copy'] {
+  transform: translate3d(0, 30px, 0);
+}
+
+.home-pass2-reveal-pending[data-home-reveal='row'] {
+  transform: translate3d(26px, 0, 0);
+}
+
+.home-pass2-reveal-pending[data-home-reveal='image'],
+.home-pass2-reveal-pending[data-home-reveal='media'] {
+  clip-path: inset(7% 5% 7% 5% round 2rem);
+}
+
+.home-pass2-reveal-visible {
+  opacity: 1;
+  clip-path: inset(0 0 0 0 round 0);
+  transition:
+    opacity 760ms cubic-bezier(.2, .8, .2, 1),
+    transform 760ms cubic-bezier(.2, .8, .2, 1),
+    clip-path 900ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.home-pass2-reveal-visible[data-home-reveal='up'] {
+  transform: translate3d(0, 0, 0);
+}
+
+.home-pass2-reveal-visible[data-home-reveal='copy'],
+.home-pass2-reveal-visible[data-home-reveal='row'] {
+  transform: translate3d(0, 0, 0);
+}
+
+.home-pass2-parallax-active {
+  transform: translate3d(0, var(--home-parallax-y, 0), 0) scale(1.025);
+  transform-origin: center;
+  will-change: transform;
+}
+
+.home-pass2-first-visit,
+.home-pass2-church,
+.home-pass2-schedule {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+}
+
+/* First visit: authentic congregation, editorial overlap, no repeated facade. */
+.home-pass2-first-visit {
+  background:
+    radial-gradient(circle at 12% 40%, rgba(0, 229, 255, .07), transparent 28rem),
+    #091018;
+  color: #fff;
+  padding: clamp(6.5rem, 10vw, 10rem) clamp(1rem, 4vw, 4rem);
+}
+
+.home-pass2-first-visit::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  z-index: -1;
+  height: clamp(7rem, 14vw, 13rem);
+  background: linear-gradient(180deg, transparent, #06090e);
+  pointer-events: none;
+}
+
+.home-pass2-first-visit__shell {
+  margin-inline: auto;
+  max-width: 90rem;
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(22rem, 5fr);
+  align-items: center;
+}
+
+.home-pass2-first-visit__visual {
+  position: relative;
+  min-width: 0;
+}
+
+.home-pass2-first-visit__figure {
+  --home-parallax-y: 0px;
+  position: relative;
+  min-height: clamp(38rem, 67vw, 52rem);
+  overflow: hidden;
+  border-radius: 2rem 2rem 11rem 2rem;
+  background: #0d141f;
+  box-shadow: 0 42px 110px rgba(0, 0, 0, .38);
+}
+
+.home-pass2-first-visit__image {
+  object-fit: cover;
+  object-position: 52% center;
+  transform: scale(1.035);
+}
+
+.home-pass2-first-visit__image-shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent 45%, rgba(4, 9, 14, .42) 100%),
+    linear-gradient(0deg, rgba(4, 9, 14, .8), transparent 40%);
+}
+
+.home-pass2-first-visit__location {
+  position: absolute;
+  left: clamp(1.1rem, 3vw, 2.5rem);
+  bottom: clamp(1.1rem, 3vw, 2.5rem);
+  z-index: 2;
+  display: flex;
+  max-width: 27rem;
+  gap: .75rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 1.1rem;
+  background: rgba(5, 10, 15, .38);
+  box-shadow: inset 0 1px rgba(255, 255, 255, .13);
+  backdrop-filter: blur(15px) saturate(125%);
+  -webkit-backdrop-filter: blur(15px) saturate(125%);
+  font-size: .8rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, .9);
+}
+
+.home-pass2-first-visit__location-icon {
+  width: 1rem;
+  height: 1rem;
+  margin-top: .15rem;
+  flex: none;
+  color: #00e5ff;
+}
+
+.home-pass2-first-visit__location-note {
+  margin-top: .2rem;
+  color: rgba(255, 255, 255, .56);
+}
+
+.home-pass2-first-visit__story {
+  position: relative;
+  z-index: 3;
+  margin-left: clamp(-8rem, -8vw, -4rem);
+  padding: clamp(2.25rem, 5vw, 5rem) 0 clamp(2rem, 4vw, 4rem) clamp(2rem, 5vw, 5.5rem);
+  background: linear-gradient(105deg, rgba(9, 16, 24, .98) 0%, rgba(9, 16, 24, .96) 68%, rgba(9, 16, 24, .42) 88%, transparent 100%);
+}
+
+.home-pass2-first-visit__eyebrow,
+.home-pass2-church__eyebrow,
+.home-pass2-schedule__eyebrow {
+  margin-bottom: 1.15rem;
+  color: #00e5ff;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+}
+
+.home-pass2-first-visit__header h2 {
+  max-width: 10ch;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(3.2rem, 5.4vw, 6.3rem);
+  font-weight: 500;
+  line-height: .91;
+  letter-spacing: -.052em;
+  text-wrap: balance;
+}
+
+.home-pass2-first-visit__intro {
+  max-width: 36rem;
+  margin-top: 1.5rem;
+  color: #b9c2cd;
+  font-size: clamp(.95rem, 1.2vw, 1.08rem);
+  line-height: 1.75;
+}
+
+.home-pass2-first-visit__reassurance {
+  max-width: 36rem;
+  margin-top: 1rem;
+  border-left: 2px solid rgba(0, 229, 255, .72);
+  padding-left: 1rem;
+  color: #e7edf3;
+  font-size: .82rem;
+  font-weight: 650;
+  line-height: 1.65;
+}
+
+.home-pass2-first-visit__notes {
+  max-width: 39rem;
+  margin-top: 2.2rem;
+  border-top: 1px solid rgba(255, 255, 255, .12);
+}
+
+.home-pass2-first-visit__note {
+  display: grid;
+  grid-template-columns: clamp(3rem, 5vw, 4.5rem) 1fr;
+  gap: 1rem;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+
+.home-pass2-first-visit__note:nth-child(2) { margin-left: 1rem; }
+.home-pass2-first-visit__note:nth-child(3) { margin-left: 2rem; }
+.home-pass2-first-visit__note:nth-child(4) { margin-left: 3rem; }
+
+.home-pass2-first-visit__note-number {
+  color: #00e5ff;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(1.6rem, 2.3vw, 2.5rem);
+  line-height: 1;
+}
+
+.home-pass2-first-visit__note-copy h3 {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 750;
+}
+
+.home-pass2-first-visit__note-copy p {
+  margin-top: .35rem;
+  color: #8f9aa8;
+  font-size: .85rem;
+  line-height: 1.6;
+}
+
+.home-pass2-first-visit__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  margin-top: 2rem;
+}
+
+.home-pass2-first-visit__primary-action,
+.home-pass2-first-visit__secondary-action {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: center;
+  gap: .55rem;
+  border-radius: 999px;
+  padding: .8rem 1.35rem;
+  font-size: .82rem;
+  font-weight: 800;
+  transition: transform 260ms ease, color 260ms ease, background-color 260ms ease, border-color 260ms ease;
+}
+
+.home-pass2-first-visit__primary-action {
+  background: #00e5ff;
+  color: #061016;
+}
+
+.home-pass2-first-visit__secondary-action {
+  border: 1px solid rgba(255, 255, 255, .18);
+  color: #fff;
+}
+
+.home-pass2-first-visit__primary-action:hover,
+.home-pass2-first-visit__secondary-action:hover {
+  transform: translateY(-2px);
+}
+
+.home-pass2-first-visit__primary-action:hover { background: #fff; }
+.home-pass2-first-visit__secondary-action:hover { border-color: rgba(0, 229, 255, .55); color: #00e5ff; }
+
+.home-pass2-first-visit__action-icon { width: 1.1rem; height: 1.1rem; }
+
+/* Our church: a single sticky cinematic scene with editorial values. */
+.home-pass2-church {
+  background:
+    radial-gradient(circle at 78% 35%, rgba(0, 96, 120, .12), transparent 32rem),
+    #06090e;
+  color: #fff;
+  padding: clamp(7rem, 10vw, 10rem) clamp(1rem, 4vw, 4rem) clamp(8rem, 12vw, 12rem);
+}
+
+.home-pass2-church__header,
+.home-pass2-schedule__header {
+  width: 100%;
+  max-width: 90rem;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 8fr) minmax(18rem, 4fr);
+  align-items: end;
+  gap: clamp(2rem, 5vw, 6rem);
+}
+
+.home-pass2-church__heading h2,
+.home-pass2-schedule__heading h2 {
+  max-width: 13ch;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(3.35rem, 6.8vw, 7.4rem);
+  font-weight: 500;
+  line-height: .91;
+  letter-spacing: -.055em;
+  text-wrap: balance;
+}
+
+.home-pass2-church__intro,
+.home-pass2-schedule__intro {
+  max-width: 34rem;
+  color: #aeb8c5;
+  font-size: clamp(.95rem, 1.3vw, 1.1rem);
+  line-height: 1.75;
+}
+
+.home-pass2-church__experience {
+  width: 100%;
+  max-width: 90rem;
+  margin: clamp(4rem, 7vw, 7rem) auto 0;
+  display: grid;
+  grid-template-columns: minmax(0, 7.2fr) minmax(20rem, 4.8fr);
+  gap: clamp(2rem, 5vw, 5.5rem);
+  align-items: start;
+}
+
+.home-pass2-church__visual-column {
+  position: sticky;
+  top: 7.25rem;
+  height: min(72vh, 48rem);
+  min-height: 34rem;
+}
+
+.home-pass2-church__visual {
+  --home-parallax-y: 0px;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 2.25rem 9rem 2.25rem 2.25rem;
+  background: #0b121b;
+  box-shadow: 0 48px 120px rgba(0, 0, 0, .44);
+}
+
+.home-pass2-church__image {
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.055);
+}
+
+.home-pass2-church__image-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(2, 6, 10, .86), transparent 46%);
+}
+
+.home-pass2-church__visual figcaption {
+  position: absolute;
+  left: clamp(1.3rem, 3vw, 2.6rem);
+  bottom: clamp(1.3rem, 3vw, 2.5rem);
+  max-width: 30rem;
+  color: rgba(255, 255, 255, .9);
+  font-size: .85rem;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.home-pass2-church__values {
+  margin: 0;
+}
+
+.home-pass2-church__value {
+  min-height: min(42vh, 28rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2rem, 5vw, 4rem) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .13);
+}
+
+.home-pass2-church__value:first-child { border-top: 1px solid rgba(255, 255, 255, .13); }
+
+.home-pass2-church__value-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.home-pass2-church__value-number {
+  color: rgba(0, 229, 255, .84);
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(3rem, 5vw, 5.4rem);
+  line-height: 1;
+}
+
+.home-pass2-church__value-icon {
+  width: 1.3rem;
+  height: 1.3rem;
+  color: #00e5ff;
+}
+
+.home-pass2-church__value h3 {
+  max-width: 13ch;
+  margin-top: 1.8rem;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(2rem, 3.2vw, 3.5rem);
+  font-weight: 500;
+  line-height: .98;
+  letter-spacing: -.035em;
+}
+
+.home-pass2-church__value > p {
+  max-width: 29rem;
+  margin-top: 1.15rem;
+  color: #939eac;
+  font-size: .92rem;
+  line-height: 1.7;
+}
+
+/* Meetings: light editorial interlude, designed around the hours. */
+.home-pass2-schedule {
+  background: #f1eee7;
+  color: #101820;
+  padding: clamp(9rem, 13vw, 13rem) clamp(1rem, 4vw, 4rem);
+}
+
+.home-pass2-schedule::before,
+.home-pass2-schedule::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  z-index: -1;
+  height: clamp(7rem, 12vw, 12rem);
+  pointer-events: none;
+}
+
+.home-pass2-schedule::before {
+  top: 0;
+  background: linear-gradient(180deg, #06090e 0%, rgba(6, 9, 14, .55) 24%, rgba(241, 238, 231, 0) 100%);
+}
+
+.home-pass2-schedule::after {
+  bottom: 0;
+  background: linear-gradient(0deg, #06090e 0%, rgba(6, 9, 14, .2) 22%, rgba(241, 238, 231, 0) 100%);
+}
+
+.home-pass2-schedule__eyebrow { color: #006f80; }
+.home-pass2-schedule__intro { color: #53616d; }
+
+.home-pass2-schedule__sunday {
+  width: 100%;
+  max-width: 90rem;
+  margin: clamp(4rem, 7vw, 7rem) auto 0;
+  display: grid;
+  grid-template-columns: minmax(16rem, 3.2fr) minmax(0, 7fr);
+  column-gap: clamp(2rem, 6vw, 7rem);
+  border-top: 1px solid rgba(16, 24, 32, .24);
+}
+
+.home-pass2-schedule__sunday-intro {
+  grid-row: span 2;
+  padding: clamp(2rem, 4vw, 4rem) 0;
+}
+
+.home-pass2-schedule__day,
+.home-pass2-schedule__week-meta {
+  color: #006f80;
+  font-size: .68rem;
+  font-weight: 850;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+
+.home-pass2-schedule__sunday-intro h3 {
+  max-width: 10ch;
+  margin-top: 1rem;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(2.1rem, 3vw, 3.6rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -.035em;
+}
+
+.home-pass2-schedule__sunday-intro > p:last-child {
+  max-width: 21rem;
+  margin-top: 1rem;
+  color: #5d6974;
+  font-size: .9rem;
+  line-height: 1.65;
+}
+
+.home-pass2-schedule__times {
+  min-width: 0;
+}
+
+.home-pass2-schedule__time {
+  display: grid;
+  grid-template-columns: 2.4rem minmax(0, 1fr);
+  gap: clamp(1rem, 2vw, 2rem);
+  align-items: baseline;
+  padding: clamp(1.6rem, 3.2vw, 3rem) 0;
+  border-bottom: 1px solid rgba(16, 24, 32, .2);
+}
+
+.home-pass2-schedule__time-number {
+  color: #007f91;
+  font-size: .72rem;
+  font-weight: 850;
+  letter-spacing: .12em;
+}
+
+.home-pass2-schedule__time-label {
+  margin-bottom: .5rem;
+  color: #66717b;
+  font-size: .72rem;
+  font-weight: 750;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.home-pass2-schedule__time-hours {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(2.4rem, 4.65vw, 5.4rem);
+  font-weight: 500;
+  line-height: .95;
+  letter-spacing: -.045em;
+  white-space: nowrap;
+}
+
+.home-pass2-schedule__location {
+  grid-column: 2;
+  display: flex;
+  gap: .7rem;
+  padding-top: 1.5rem;
+  color: #596671;
+  font-size: .86rem;
+  line-height: 1.55;
+}
+
+.home-pass2-schedule__location-icon,
+.home-pass2-schedule__week-icon {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+  color: #007f91;
+}
+
+.home-pass2-schedule__week {
+  width: 100%;
+  max-width: 90rem;
+  margin: clamp(4rem, 7vw, 6rem) auto 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-block: 1px solid rgba(16, 24, 32, .2);
+}
+
+.home-pass2-schedule__week-item {
+  padding: clamp(2rem, 4vw, 3.5rem) clamp(0rem, 4vw, 4rem) clamp(2rem, 4vw, 3.5rem) 0;
+}
+
+.home-pass2-schedule__week-item + .home-pass2-schedule__week-item {
+  border-left: 1px solid rgba(16, 24, 32, .2);
+  padding-right: 0;
+  padding-left: clamp(2rem, 4vw, 4rem);
+}
+
+.home-pass2-schedule__week-meta {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+}
+
+.home-pass2-schedule__week-item h3 {
+  margin-top: 1.2rem;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(1.8rem, 2.7vw, 3rem);
+  font-weight: 500;
+  letter-spacing: -.035em;
+}
+
+.home-pass2-schedule__week-item > p {
+  max-width: 34rem;
+  margin-top: .9rem;
+  color: #5f6a75;
+  font-size: .9rem;
+  line-height: 1.7;
+}
+
+/* Fixed adaptive liquid-glass navigation. */
+.home-pass2-navbar {
+  transition: padding 320ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.home-pass2-navbar-glass {
+  transition:
+    background-color 320ms ease,
+    color 320ms ease,
+    border-color 320ms ease,
+    box-shadow 320ms ease,
+    backdrop-filter 320ms ease;
+}
+
+.home-pass2-navbar--elevated {
+  padding-top: .65rem;
+}
+
+.home-pass2-navbar--elevated .home-pass2-nav-brand-shell {
+  min-height: 3.1rem;
+}
+
+.home-pass2-navbar--elevated .home-pass2-nav-brand-mark {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.home-pass2-navbar--dark .home-pass2-navbar-glass {
+  border-color: rgba(255, 255, 255, .12);
+  background: linear-gradient(135deg, rgba(255, 255, 255, .07), rgba(4, 9, 14, .18));
+  box-shadow: inset 0 1px rgba(255, 255, 255, .15), 0 18px 48px rgba(0, 0, 0, .22);
+  backdrop-filter: blur(16px) saturate(135%);
+  -webkit-backdrop-filter: blur(16px) saturate(135%);
+}
+
+.home-pass2-navbar--dark.home-pass2-navbar--elevated .home-pass2-navbar-glass,
+.home-pass2-navbar--dark.home-pass2-navbar--menu-open .home-pass2-navbar-glass {
+  background: linear-gradient(135deg, rgba(8, 15, 22, .72), rgba(3, 8, 13, .52));
+  backdrop-filter: blur(21px) saturate(145%);
+  -webkit-backdrop-filter: blur(21px) saturate(145%);
+}
+
+.home-pass2-navbar--light .home-pass2-navbar-glass {
+  border-color: rgba(15, 34, 41, .14);
+  background: linear-gradient(135deg, rgba(255, 255, 255, .72), rgba(235, 231, 221, .42));
+  box-shadow: inset 0 1px rgba(255, 255, 255, .82), 0 18px 48px rgba(42, 52, 55, .14);
+  backdrop-filter: blur(18px) saturate(125%);
+  -webkit-backdrop-filter: blur(18px) saturate(125%);
+}
+
+.home-pass2-navbar--light.home-pass2-navbar--elevated .home-pass2-navbar-glass,
+.home-pass2-navbar--light.home-pass2-navbar--menu-open .home-pass2-navbar-glass {
+  background: linear-gradient(135deg, rgba(255, 255, 255, .86), rgba(236, 232, 223, .7));
+  backdrop-filter: blur(22px) saturate(130%);
+  -webkit-backdrop-filter: blur(22px) saturate(130%);
+}
+
+.home-pass2-navbar--light .home-pass2-nav-brand-name,
+.home-pass2-navbar--light .home-pass2-nav-link,
+.home-pass2-navbar--light .home-pass2-navbar-toggle {
+  color: #101820 !important;
+}
+
+.home-pass2-navbar--light .home-pass2-nav-brand-kicker,
+.home-pass2-navbar--light .home-pass2-nav-link--highlight {
+  color: #006f80 !important;
+}
+
+.home-pass2-navbar--light .home-pass2-navbar-visit {
+  background: #101820;
+  color: #fff;
+}
+
+.home-pass2-navbar--light .home-pass2-navbar-visit:hover {
+  background: #006f80;
+}
+
+.home-pass2-nav-link {
+  position: relative;
+  isolation: isolate;
+}
+
+.home-pass2-nav-link::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: .35rem;
+  width: 0;
+  height: 1px;
+  transform: translateX(-50%);
+  background: currentColor;
+  opacity: .72;
+  transition: width 260ms ease;
+}
+
+.home-pass2-nav-link--active {
+  background: rgba(255, 255, 255, .09);
+  color: #fff;
+}
+
+.home-pass2-navbar--light .home-pass2-nav-link--active {
+  background: rgba(0, 83, 96, .09);
+  color: #005968 !important;
+}
+
+.home-pass2-nav-link--active::after { width: 1.1rem; }
+
+.home-pass2-navbar--light .home-pass2-navbar-menu .home-pass2-nav-link {
+  color: #101820 !important;
+}
+
+.home-pass2-section {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+}
+
+.home-pass2-eyebrow {
+  color: #00e5ff;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+}
+
+.home-pass2-button {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: center;
+  gap: .55rem;
+  border-radius: 999px;
+  padding: .8rem 1.35rem;
+  font-size: .82rem;
+  font-weight: 850;
+  transition: transform 260ms ease, background-color 260ms ease, color 260ms ease, box-shadow 260ms ease;
+}
+
+.home-pass2-button-primary {
+  background: #00e5ff;
+  color: #061016;
+  box-shadow: 0 14px 38px rgba(0, 229, 255, .12);
+}
+
+.home-pass2-button:hover { transform: translateY(-2px); }
+.home-pass2-button-primary:hover { background: #fff; box-shadow: 0 18px 46px rgba(255, 255, 255, .14); }
+
+.home-pass2-text-link {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: .55rem;
+  color: #00e5ff;
+  font-size: .8rem;
+  font-weight: 800;
+  transition: color 240ms ease, transform 240ms ease;
+}
+
+.home-pass2-text-link:hover { color: #fff; transform: translateX(3px); }
+
+/* Message: official thumbnail and a single purposeful layered note. */
+.home-pass2-sermon {
+  background:
+    radial-gradient(circle at 82% 48%, rgba(0, 96, 120, .14), transparent 30rem),
+    #06090e;
+  color: #fff;
+  padding: clamp(9rem, 13vw, 13rem) clamp(1rem, 4vw, 4rem) clamp(7rem, 11vw, 11rem);
+}
+
+.home-pass2-sermon::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -1;
+  height: clamp(8rem, 14vw, 14rem);
+  background: linear-gradient(180deg, #f1eee7 0%, rgba(241, 238, 231, .32) 22%, transparent 100%);
+  pointer-events: none;
+}
+
+.home-pass2-sermon-shell,
+.home-pass2-events-shell,
+.home-pass2-nine-steps-shell,
+.home-pass2-social-shell,
+.home-pass2-footer-shell {
+  width: 100%;
+  max-width: 90rem;
+  margin-inline: auto;
+}
+
+.home-pass2-sermon-heading {
+  position: relative;
+  z-index: 2;
+}
+
+.home-pass2-sermon-title {
+  max-width: 12ch;
+  margin-top: 1.1rem;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(3.3rem, 7vw, 7.6rem);
+  font-weight: 500;
+  line-height: .9;
+  letter-spacing: -.055em;
+  text-wrap: balance;
+}
+
+.home-pass2-sermon-title em,
+.home-pass2-events-heading h2 em,
+.home-pass2-nine-steps-heading em,
+.home-pass2-prayer-copy h2 em,
+.home-pass2-location-heading h2 em,
+.home-pass2-social-heading h2 em {
+  display: block;
+  color: #00e5ff;
+  font-weight: 400;
+}
+
+.home-pass2-sermon-composition {
+  margin-top: clamp(3.5rem, 7vw, 7rem);
+  display: grid;
+  grid-template-columns: minmax(0, 8.2fr) minmax(19rem, 3.8fr);
+  align-items: center;
+}
+
+.home-pass2-sermon-media {
+  --home-parallax-y: 0px;
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 2.25rem 2.25rem 8rem 2.25rem;
+  background: #0c141d;
+  box-shadow: 0 42px 110px rgba(0, 0, 0, .46);
+}
+
+.home-pass2-sermon-image {
+  object-fit: cover;
+  transform: scale(1.02);
+}
+
+.home-pass2-sermon-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(2, 7, 11, .18), transparent 50%, rgba(2, 7, 11, .12));
+}
+
+.home-pass2-sermon-player {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.home-pass2-sermon-play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+  color: #fff;
+}
+
+.home-pass2-sermon-play-disc {
+  display: grid;
+  width: clamp(4.2rem, 7vw, 6.2rem);
+  height: clamp(4.2rem, 7vw, 6.2rem);
+  place-items: center;
+  border-radius: 999px;
+  background: #00e5ff;
+  color: #061016;
+  box-shadow: 0 0 0 .7rem rgba(2, 7, 11, .34), 0 0 48px rgba(0, 229, 255, .28);
+  transition: transform 260ms ease, background-color 260ms ease;
+}
+
+.home-pass2-sermon-play:hover .home-pass2-sermon-play-disc { transform: scale(1.06); background: #fff; }
+
+.home-pass2-sermon-play-label {
+  font-size: .69rem;
+  font-weight: 850;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 18px #000;
+}
+
+.home-pass2-sermon-note {
+  position: relative;
+  z-index: 3;
+  margin-left: clamp(-5rem, -5vw, -2.5rem);
+  padding: clamp(2rem, 4vw, 3.6rem);
+  border: 1px solid rgba(255, 255, 255, .13);
+  border-radius: 1.75rem;
+  background: linear-gradient(145deg, rgba(16, 27, 37, .9), rgba(5, 11, 17, .66));
+  box-shadow: inset 0 1px rgba(255, 255, 255, .12), 0 36px 80px rgba(0, 0, 0, .38);
+  backdrop-filter: blur(22px) saturate(125%);
+  -webkit-backdrop-filter: blur(22px) saturate(125%);
+}
+
+.home-pass2-sermon-index {
+  position: absolute;
+  right: 1.2rem;
+  top: .55rem;
+  color: rgba(255, 255, 255, .045);
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(5rem, 9vw, 9rem);
+  line-height: 1;
+}
+
+.home-pass2-sermon-kicker {
+  color: #00e5ff;
+  font-size: .68rem;
+  font-weight: 850;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+
+.home-pass2-sermon-note h3 {
+  position: relative;
+  max-width: 13ch;
+  margin-top: 1rem;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(2.15rem, 3.3vw, 3.65rem);
+  font-weight: 500;
+  line-height: .98;
+  letter-spacing: -.04em;
+}
+
+.home-pass2-sermon-speaker { margin-top: .75rem; color: #00e5ff; font-size: .8rem; font-weight: 750; }
+.home-pass2-sermon-summary,
+.home-pass2-sermon-detail { margin-top: 1.2rem; color: #a8b2bf; font-size: .88rem; line-height: 1.7; }
+.home-pass2-sermon-detail { color: #74808f; }
+.home-pass2-sermon-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem 1.2rem; margin-top: 1.7rem; }
+
+/* Events: large dates drive the composition; preview appears only for verified media. */
+.home-pass2-events {
+  background:
+    radial-gradient(circle at 12% 28%, rgba(0, 229, 255, .055), transparent 26rem),
+    #091018;
+  color: #fff;
+  padding: clamp(7rem, 11vw, 11rem) clamp(1rem, 4vw, 4rem);
+}
+
+.home-pass2-events-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.home-pass2-events-heading h2 {
+  margin-top: 1rem;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(3.3rem, 7vw, 7.5rem);
+  font-weight: 500;
+  line-height: .88;
+  letter-spacing: -.055em;
+}
+
+.home-pass2-events-composition {
+  margin-top: clamp(3.8rem, 7vw, 7rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2.5rem, 6vw, 6rem);
+  align-items: start;
+}
+
+.home-pass2-events-composition.has-preview {
+  grid-template-columns: minmax(0, 7.4fr) minmax(19rem, 4.6fr);
+}
+
+.home-pass2-events-list {
+  border-top: 1px solid rgba(255, 255, 255, .14);
+}
+
+.home-pass2-event-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: clamp(7rem, 11vw, 10.5rem) minmax(0, 1fr) minmax(8rem, 12rem);
+  gap: clamp(1rem, 3vw, 2.6rem);
+  align-items: center;
+  min-height: clamp(10rem, 14vw, 13.5rem);
+  border-bottom: 1px solid rgba(255, 255, 255, .13);
+  transition: padding 300ms ease, background-color 300ms ease;
+}
+
+.home-pass2-event-row:hover,
+.home-pass2-event-row.is-preview-active {
+  padding-inline: .75rem;
+  background: linear-gradient(90deg, rgba(0, 229, 255, .045), transparent 68%);
+}
+
+.home-pass2-event-day {
+  display: block;
+  color: #00e5ff;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(3.7rem, 7vw, 7rem);
+  line-height: .8;
+  letter-spacing: -.06em;
+}
+
+.home-pass2-event-month {
+  display: block;
+  margin-top: .65rem;
+  color: #7f8b99;
+  font-size: .65rem;
+  font-weight: 800;
+  letter-spacing: .18em;
+}
+
+.home-pass2-event-category {
+  color: #00e5ff;
+  font-size: .63rem;
+  font-weight: 850;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+}
+
+.home-pass2-event-copy h3 {
+  margin-top: .55rem;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(1.7rem, 3vw, 3.15rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -.035em;
+}
+
+.home-pass2-event-date-display,
+.home-pass2-event-guest { margin-top: .55rem; color: #8995a3; font-size: .78rem; line-height: 1.5; }
+.home-pass2-event-guest { color: #b2bcc8; }
+
+.home-pass2-event-details,
+.home-pass2-event-schedule {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem .85rem;
+  margin-top: .72rem;
+  color: #aab4c0;
+  font-size: .69rem;
+  line-height: 1.45;
+}
+
+.home-pass2-event-details li::before {
+  content: '·';
+  margin-right: .35rem;
+  color: #00e5ff;
+}
+
+.home-pass2-event-schedule span {
+  margin-right: .35rem;
+  color: #00e5ff;
+  font-weight: 800;
+}
+
+.home-pass2-event-time {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: .5rem;
+  color: #c1c9d2;
+  font-size: .78rem;
+  font-weight: 650;
+  line-height: 1.45;
+  text-align: right;
+}
+
+.home-pass2-event-time svg { flex: none; color: #00e5ff; }
+
+.home-pass2-event-preview-cue {
+  position: absolute;
+  right: 0;
+  bottom: 1rem;
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  padding-inline: .55rem;
+  color: rgba(0, 229, 255, .7);
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  transition: color 220ms ease;
+}
+
+.home-pass2-event-preview-cue:hover,
+.home-pass2-event-preview-cue:focus-visible { color: #fff; }
+
+.home-pass2-events-preview {
+  position: sticky;
+  top: 7.5rem;
+}
+
+.home-pass2-events-preview-frame {
+  --home-parallax-y: 0px;
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 1.8rem 6rem 1.8rem 1.8rem;
+  background: #0c141d;
+  box-shadow: 0 42px 100px rgba(0, 0, 0, .38);
+}
+
+.home-pass2-events-preview-image { object-fit: cover; object-position: center; transform: scale(1.06); }
+.home-pass2-events-preview-shade { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(2, 7, 11, .72), transparent 45%); }
+
+.home-pass2-events-preview figcaption {
+  margin-top: 1rem;
+  color: #c2cad3;
+  font-size: .82rem;
+  font-weight: 700;
+}
+
+.home-pass2-events-preview figcaption span {
+  display: block;
+  margin-bottom: .35rem;
+  color: #00e5ff;
+  font-size: .62rem;
+  font-weight: 850;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+}
+
+.home-pass2-events-note {
+  display: flex;
+  gap: .7rem;
+  margin-top: 2rem;
+  color: #75818e;
+  font-size: .76rem;
+  line-height: 1.55;
+}
+
+.home-pass2-events-note svg { flex: none; margin-top: .15rem; color: #00e5ff; }
+.home-pass2-events-empty { padding: 3rem 0; color: #94a0ad; }
+.home-pass2-events-empty p { color: #fff; font-size: 1.15rem; font-weight: 750; }
+.home-pass2-events-empty span { display: block; margin-top: .6rem; font-size: .85rem; }
+
+/* Nine Steps: the heart film is the only Level 3 moment after the Hero. */
+.home-pass2-nine-steps {
+  min-height: 100vh;
+  min-height: 100svh;
+  background: #041017;
+  color: #fff;
+  padding: clamp(8rem, 13vw, 13rem) clamp(1rem, 4vw, 4rem);
+}
+
+.home-pass2-nine-steps-ambient {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 50% 46%, rgba(0, 229, 255, .12), transparent 24rem),
+    radial-gradient(circle at 76% 48%, rgba(235, 137, 56, .09), transparent 28rem),
+    linear-gradient(180deg, #091018, #031017 55%, #061017);
+}
+
+.home-pass2-nine-steps-heading {
+  position: relative;
+  z-index: 3;
+  max-width: 70rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.home-pass2-nine-steps-heading h2 {
+  margin-top: 1rem;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(4rem, 9vw, 9.5rem);
+  font-weight: 500;
+  line-height: .82;
+  letter-spacing: -.065em;
+}
+
+.home-pass2-nine-steps-heading em {
+  margin-top: .2em;
+  font-size: .47em;
+  line-height: .98;
+  letter-spacing: -.035em;
+}
+
+.home-pass2-nine-steps-lead {
+  margin-top: 1.4rem;
+  color: #ccd4dc;
+  font-size: clamp(1rem, 1.6vw, 1.35rem);
+  line-height: 1.6;
+}
+
+.home-pass2-nine-steps-signature {
+  position: relative;
+  width: min(100%, 58rem);
+  margin: clamp(3rem, 6vw, 6rem) auto 0;
+}
+
+.home-pass2-heart-media {
+  --home-parallax-y: 0px;
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 2.4rem;
+  background: #03070c;
+  box-shadow: 0 50px 130px rgba(0, 0, 0, .5), 0 0 90px rgba(0, 229, 255, .08);
+}
+
+.home-pass2-heart-poster,
+.home-pass2-heart-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.home-pass2-heart-video {
+  opacity: 0;
+  transition: opacity 900ms ease;
+}
+
+.home-pass2-heart-video.is-ready { opacity: 1; }
+.home-pass2-heart-loop-veil { position: absolute; inset: 0; background: #03070c; opacity: 0; pointer-events: none; }
+
+.home-pass2-heart-light {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 43%, rgba(0, 229, 255, .04), transparent 45%);
+  pointer-events: none;
+}
+
+.home-pass2-nine-steps-orbit-label {
+  position: absolute;
+  z-index: 3;
+  color: rgba(255, 255, 255, .62);
+  font-size: .62rem;
+  font-weight: 850;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+
+.home-pass2-nine-steps-orbit-label-start { left: -1rem; top: 16%; }
+.home-pass2-nine-steps-orbit-label-grow { right: -1.5rem; top: 42%; }
+.home-pass2-nine-steps-orbit-label-live { left: 5%; bottom: 10%; }
+
+.home-pass2-nine-steps-content {
+  width: min(100%, 62rem);
+  margin: clamp(3rem, 6vw, 5.5rem) auto 0;
+  text-align: center;
+}
+
+.home-pass2-nine-steps-summary {
+  max-width: 47rem;
+  margin-inline: auto;
+  color: #8f9ba9;
+  font-size: .92rem;
+  line-height: 1.75;
+}
+
+.home-pass2-nine-steps-chapters {
+  margin-top: clamp(2.5rem, 5vw, 4.5rem);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-block: 1px solid rgba(255, 255, 255, .14);
+}
+
+.home-pass2-nine-steps-chapter {
+  position: relative;
+  min-height: 9.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+.home-pass2-nine-steps-chapter + .home-pass2-nine-steps-chapter { border-left: 1px solid rgba(255, 255, 255, .14); }
+
+.home-pass2-nine-steps-chapter-index {
+  position: absolute;
+  top: .4rem;
+  color: rgba(255, 255, 255, .035);
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 5.2rem;
+  line-height: 1;
+}
+
+.home-pass2-nine-steps-chapter-range {
+  position: relative;
+  color: #00e5ff;
+  font-size: .7rem;
+  font-weight: 850;
+  letter-spacing: .18em;
+}
+
+.home-pass2-nine-steps-chapter strong {
+  position: relative;
+  margin-top: .6rem;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(1.55rem, 2.4vw, 2.4rem);
+  font-weight: 500;
+}
+
+.home-pass2-nine-steps-cta {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  min-height: 3.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  margin-top: 2.5rem;
+  overflow: hidden;
+  border: 1px solid rgba(0, 229, 255, .35);
+  border-radius: 999px;
+  padding: 1rem 1.75rem;
+  background: rgba(0, 229, 255, .08);
+  box-shadow: inset 0 1px rgba(255, 255, 255, .1), 0 20px 55px rgba(0, 229, 255, .08);
+  color: #fff;
+  font-size: .85rem;
+  font-weight: 850;
+  perspective: 700px;
+  transition: transform 300ms ease, background-color 300ms ease, box-shadow 300ms ease;
+}
+
+.home-pass2-nine-steps-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transform: translateX(-105%);
+  background: linear-gradient(100deg, transparent 20%, rgba(0, 229, 255, .34) 50%, transparent 80%);
+  transition: transform 650ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.home-pass2-nine-steps-cta:hover {
+  transform: translateY(-3px) rotateX(2deg);
+  background: rgba(0, 229, 255, .14);
+  box-shadow: inset 0 1px rgba(255, 255, 255, .15), 0 24px 68px rgba(0, 229, 255, .16);
+}
+
+.home-pass2-nine-steps-cta:hover::before { transform: translateX(105%); }
+
+/* Prayer: a typographic breath before the practical destination. */
+.home-pass2-prayer {
+  background: #e9e3d8;
+  color: #111820;
+  padding: clamp(8rem, 13vw, 13rem) clamp(1rem, 4vw, 4rem) clamp(11rem, 16vw, 16rem);
+}
+
+.home-pass2-prayer-word {
+  position: absolute;
+  left: 50%;
+  top: 47%;
+  z-index: -1;
+  transform: translate(-50%, -50%);
+  color: rgba(0, 83, 96, .055);
+  font-size: clamp(6rem, 20vw, 22rem);
+  font-weight: 900;
+  line-height: .72;
+  letter-spacing: -.07em;
+  white-space: nowrap;
+}
+
+.home-pass2-prayer-shell {
+  width: 100%;
+  max-width: 90rem;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 8fr) minmax(17rem, 3fr);
+  align-items: end;
+  gap: clamp(1.5rem, 5vw, 5rem);
+}
+
+.home-pass2-prayer-index {
+  color: #007f91;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(3rem, 6vw, 6rem);
+  line-height: 1;
+}
+
+.home-pass2-prayer .home-pass2-eyebrow { color: #006f80; }
+
+.home-pass2-prayer-copy h2 {
+  max-width: 12ch;
+  margin-top: 1rem;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(3.5rem, 7vw, 7.8rem);
+  font-weight: 500;
+  line-height: .88;
+  letter-spacing: -.055em;
+}
+
+.home-pass2-prayer-copy h2 em { color: #006f80; }
+
+.home-pass2-prayer-copy > p:last-child {
+  max-width: 40rem;
+  margin-top: 1.5rem;
+  color: #59646d;
+  font-size: .98rem;
+  line-height: 1.75;
+}
+
+.home-pass2-prayer-cta {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  min-height: 4rem;
+  align-items: center;
+  gap: .8rem;
+  border-block: 1px solid rgba(16, 24, 32, .25);
+  padding: 1rem .25rem;
+  color: #005f6d;
+  font-size: .85rem;
+  font-weight: 850;
+  transition: padding 260ms ease, color 260ms ease, border-color 260ms ease;
+}
+
+.home-pass2-prayer-cta:hover { padding-inline: .75rem; color: #111820; border-color: #007f91; }
+
+/* Location: the facade appears here once, at destination scale. */
+.home-pass2-location {
+  min-height: max(100vh, 52rem);
+  min-height: max(100svh, 52rem);
+  margin-top: clamp(-7rem, -7vw, -4rem);
+  background: #06090e;
+  color: #fff;
+}
+
+.home-pass2-location-media,
+.home-pass2-location-shade {
+  position: absolute;
+  inset: -2.5rem 0;
+}
+
+.home-pass2-location-media { --home-parallax-y: 0px; z-index: -3; }
+.home-pass2-location-image { object-fit: cover; object-position: center; transform: scale(1.06); }
+
+.home-pass2-location-shade {
+  z-index: -2;
+  background:
+    linear-gradient(90deg, rgba(3, 7, 12, .9) 0%, rgba(3, 7, 12, .48) 45%, rgba(3, 7, 12, .15) 72%, rgba(3, 7, 12, .45) 100%),
+    linear-gradient(0deg, #06090e 0%, transparent 30%, rgba(3, 7, 12, .3) 100%);
+}
+
+.home-pass2-location-shell {
+  position: relative;
+  min-height: max(100vh, 52rem);
+  min-height: max(100svh, 52rem);
+  width: 100%;
+  max-width: 90rem;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(20rem, 5fr);
+  align-items: end;
+  gap: clamp(2rem, 6vw, 6rem);
+  padding: clamp(8rem, 12vw, 12rem) clamp(1rem, 4vw, 4rem) clamp(4rem, 7vw, 7rem);
+}
+
+.home-pass2-location-heading h2 {
+  max-width: 10ch;
+  margin-top: 1rem;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(3.7rem, 8vw, 8.8rem);
+  font-weight: 500;
+  line-height: .84;
+  letter-spacing: -.06em;
+}
+
+.home-pass2-location-heading > p:last-child {
+  max-width: 31rem;
+  margin-top: 1.4rem;
+  color: #d1d7de;
+  font-size: .92rem;
+  line-height: 1.7;
+}
+
+.home-pass2-location-panel {
+  padding: clamp(1.7rem, 3vw, 3rem);
+  border: 1px solid rgba(255, 255, 255, .17);
+  border-radius: 1.7rem;
+  background: linear-gradient(145deg, rgba(8, 15, 21, .74), rgba(5, 10, 15, .46));
+  box-shadow: inset 0 1px rgba(255, 255, 255, .15), 0 35px 85px rgba(0, 0, 0, .34);
+  backdrop-filter: blur(22px) saturate(135%);
+  -webkit-backdrop-filter: blur(22px) saturate(135%);
+}
+
+.home-pass2-location-panel-kicker {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  color: #00e5ff;
+  font-size: .66rem;
+  font-weight: 850;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.home-pass2-location-panel h3 {
+  max-width: 14ch;
+  margin-top: 1rem;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(2rem, 3vw, 3.4rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -.035em;
+}
+
+.home-pass2-location-panel address {
+  max-width: 31rem;
+  margin-top: 1.1rem;
+  color: #c2cbd4;
+  font-size: .86rem;
+  font-style: normal;
+  line-height: 1.7;
+}
+
+.home-pass2-location-details { margin-top: 1.6rem; border-block: 1px solid rgba(255, 255, 255, .13); }
+.home-pass2-location-details > div { padding: 1rem 0; }
+.home-pass2-location-details > div + div { border-top: 1px solid rgba(255, 255, 255, .1); }
+.home-pass2-location-details dt { display: flex; align-items: center; gap: .5rem; color: #00e5ff; font-size: .7rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+.home-pass2-location-details dd { margin-top: .45rem; color: #b3bdc7; font-size: .82rem; line-height: 1.55; }
+.home-pass2-location-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; margin-top: 1.7rem; }
+
+.home-pass2-location-caption {
+  position: absolute;
+  left: clamp(1rem, 4vw, 4rem);
+  bottom: 1.2rem;
+  color: rgba(255, 255, 255, .6);
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+/* Social and footer: typography and rhythm instead of boxed channel cards. */
+.home-pass2-social {
+  background: #091018;
+  color: #fff;
+  padding: clamp(7rem, 11vw, 11rem) clamp(1rem, 4vw, 4rem);
+}
+
+.home-pass2-social-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 8fr) minmax(18rem, 4fr);
+  align-items: end;
+  gap: clamp(2rem, 6vw, 6rem);
+}
+
+.home-pass2-social-heading h2 {
+  margin-top: 1rem;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(3.5rem, 7.7vw, 8.5rem);
+  font-weight: 500;
+  line-height: .84;
+  letter-spacing: -.06em;
+}
+
+.home-pass2-social-heading > p {
+  max-width: 28rem;
+  color: #8c98a6;
+  font-size: .9rem;
+  line-height: 1.7;
+}
+
+.home-pass2-social-list {
+  margin-top: clamp(3.7rem, 7vw, 6.5rem);
+  border-top: 1px solid rgba(255, 255, 255, .14);
+}
+
+.home-pass2-social-link {
+  display: grid;
+  grid-template-columns: 3rem 2.5rem minmax(9rem, 1.2fr) minmax(12rem, 2fr) 2rem;
+  align-items: center;
+  gap: clamp(.8rem, 2vw, 2rem);
+  min-height: clamp(6.5rem, 9vw, 8.5rem);
+  border-bottom: 1px solid rgba(255, 255, 255, .13);
+  transition: padding 280ms ease, color 280ms ease, background-color 280ms ease;
+}
+
+.home-pass2-social-link:hover {
+  padding-inline: 1rem;
+  background: linear-gradient(90deg, rgba(0, 229, 255, .05), transparent 62%);
+}
+
+.home-pass2-social-number { color: #64717f; font-size: .68rem; font-weight: 800; letter-spacing: .15em; }
+.home-pass2-social-icon { width: 1.25rem; height: 1.25rem; color: #00e5ff; }
+.home-pass2-social-name { font-family: var(--font-serif), Georgia, serif; font-size: clamp(1.8rem, 3vw, 3.1rem); font-weight: 500; letter-spacing: -.035em; }
+.home-pass2-social-label { color: #8793a1; font-size: .84rem; }
+.home-pass2-social-arrow { width: 1.15rem; height: 1.15rem; color: #00e5ff; transition: transform 260ms ease; }
+.home-pass2-social-link:hover .home-pass2-social-arrow { transform: translate(4px, -3px); }
+
+.home-pass2-footer {
+  border-top: 1px solid rgba(255, 255, 255, .1);
+  background: #06090e;
+  color: #8d99a6;
+  padding: clamp(5rem, 8vw, 8rem) clamp(1rem, 4vw, 4rem) 2rem;
+}
+
+.home-pass2-footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.home-pass2-footer-mark {
+  position: relative;
+  width: 3.25rem;
+  height: 3.25rem;
+  flex: none;
+  overflow: hidden;
+  border: 1px solid rgba(0, 229, 255, .28);
+  border-radius: 999px;
+  background: #000;
+  box-shadow: 0 0 30px rgba(0, 229, 255, .1);
+}
+
+.home-pass2-footer-name { color: #fff; font-size: .9rem; font-weight: 800; }
+.home-pass2-footer-international { margin-top: .2rem; color: #00e5ff; font-size: .6rem; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; }
+
+.home-pass2-footer-statement {
+  max-width: 19ch;
+  margin-top: clamp(2.5rem, 5vw, 4.5rem);
+  color: #fff;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(2.4rem, 5vw, 5.5rem);
+  font-weight: 500;
+  line-height: .98;
+  letter-spacing: -.045em;
+}
+
+.home-pass2-footer-directory {
+  margin-top: clamp(4rem, 7vw, 7rem);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-block: 1px solid rgba(255, 255, 255, .12);
+}
+
+.home-pass2-footer-directory > * { padding: clamp(2rem, 4vw, 3.5rem) 0; }
+.home-pass2-footer-directory > * + * { border-left: 1px solid rgba(255, 255, 255, .12); padding-left: clamp(2rem, 5vw, 5rem); }
+.home-pass2-footer-directory h2 { color: #fff; font-size: .67rem; font-weight: 850; letter-spacing: .18em; text-transform: uppercase; }
+.home-pass2-footer-directory p { max-width: 27rem; margin-top: 1rem; font-size: .84rem; line-height: 1.7; }
+.home-pass2-footer-links { display: grid; gap: .85rem; margin-top: 1rem; }
+.home-pass2-footer-links a { display: flex; min-height: 2.75rem; align-items: center; color: #b7c0ca; font-size: .84rem; font-weight: 650; transition: color 220ms ease, transform 220ms ease; }
+.home-pass2-footer-links a:first-child { color: #00e5ff; font-weight: 800; }
+.home-pass2-footer-links a:hover { color: #fff; transform: translateX(3px); }
+
+.home-pass2-footer-legal {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.6rem;
+  color: #65717e;
+  font-size: .68rem;
+}
+
+.home-pass2-footer-legal p:last-child { color: #00e5ff; }
+
+@media (max-width: 1023px) {
+  .home-pass2-first-visit__shell,
+  .home-pass2-church__experience,
+  .home-pass2-church__header,
+  .home-pass2-schedule__header,
+  .home-pass2-schedule__sunday {
+    grid-template-columns: 1fr;
+  }
+
+  .home-pass2-first-visit__figure { min-height: 34rem; }
+
+  .home-pass2-first-visit__story {
+    margin: -5rem 0 0 clamp(1rem, 7vw, 4rem);
+    padding: clamp(2rem, 6vw, 4rem);
+    background: linear-gradient(145deg, rgba(9, 16, 24, .99) 0%, rgba(9, 16, 24, .96) 78%, rgba(9, 16, 24, .7) 100%);
+  }
+
+  .home-pass2-church__visual-column {
+    position: static;
+    height: min(70vw, 38rem);
+    min-height: 27rem;
+  }
+
+  .home-pass2-church__values {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid rgba(255, 255, 255, .13);
+  }
+
+  .home-pass2-church__value {
+    min-height: 0;
+    padding: 2.3rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, .13);
+  }
+
+  .home-pass2-church__value:first-child { border-top: 0; }
+  .home-pass2-church__value + .home-pass2-church__value { border-left: 1px solid rgba(255, 255, 255, .13); }
+
+  .home-pass2-schedule__sunday-intro { grid-row: auto; }
+  .home-pass2-schedule__location { grid-column: auto; }
+
+  .home-pass2-sermon-composition,
+  .home-pass2-events-composition.has-preview,
+  .home-pass2-prayer-shell,
+  .home-pass2-location-shell,
+  .home-pass2-social-heading {
+    grid-template-columns: 1fr;
+  }
+
+  .home-pass2-sermon-note {
+    width: calc(100% - clamp(1.5rem, 8vw, 5rem));
+    margin: clamp(-4rem, -4vw, -2rem) 0 0 auto;
+  }
+
+  .home-pass2-events-preview {
+    position: static;
+    width: min(100%, 36rem);
+    justify-self: end;
+  }
+
+  .home-pass2-events-preview-frame { aspect-ratio: 16 / 10; }
+
+  .home-pass2-prayer-shell { align-items: start; }
+  .home-pass2-prayer-index { font-size: 3.7rem; }
+  .home-pass2-prayer-cta { width: min(100%, 28rem); }
+
+  .home-pass2-location-shell {
+    align-content: end;
+    padding-inline: clamp(1rem, 5vw, 3rem);
+  }
+
+  .home-pass2-location-panel {
+    width: min(100%, 35rem);
+    justify-self: end;
+  }
+
+  .home-pass2-location-caption { left: clamp(1rem, 5vw, 3rem); }
+
+  .home-pass2-social-heading { gap: 1.8rem; }
+}
+
+@media (max-width: 767px) {
+  .home-pass2-first-visit,
+  .home-pass2-church,
+  .home-pass2-schedule {
+    padding-inline: 1rem;
+  }
+
+  .home-pass2-first-visit__figure {
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+    border-radius: 1.5rem 1.5rem 5rem 1.5rem;
+  }
+
+  .home-pass2-first-visit__image { object-position: 56% center; }
+
+  .home-pass2-first-visit__location {
+    right: 1rem;
+    bottom: 2rem;
+    max-width: none;
+  }
+
+  .home-pass2-first-visit__story {
+    margin: -1rem .7rem 0;
+    padding: 2rem 1rem 0;
+  }
+
+  .home-pass2-first-visit__header h2 { font-size: clamp(3.15rem, 16vw, 4.65rem); }
+  .home-pass2-first-visit__note:nth-child(n) { margin-left: 0; }
+  .home-pass2-first-visit__actions { flex-direction: column; }
+  .home-pass2-first-visit__primary-action,
+  .home-pass2-first-visit__secondary-action { width: 100%; }
+
+  .home-pass2-church__header,
+  .home-pass2-schedule__header { gap: 1.7rem; }
+
+  .home-pass2-church__heading h2,
+  .home-pass2-schedule__heading h2 { font-size: clamp(3.25rem, 15vw, 4.8rem); }
+
+  .home-pass2-church__visual-column {
+    height: auto;
+    min-height: 0;
+  }
+
+  .home-pass2-church__visual {
+    aspect-ratio: 4 / 5;
+    border-radius: 1.5rem 4rem 1.5rem 1.5rem;
+  }
+
+  .home-pass2-church__image { object-position: center; }
+
+  .home-pass2-church__values { grid-template-columns: 1fr; }
+  .home-pass2-church__value { padding: 2.4rem 0; }
+  .home-pass2-church__value + .home-pass2-church__value { border-left: 0; }
+  .home-pass2-church__value h3 { font-size: 2.45rem; }
+
+  .home-pass2-schedule__time {
+    grid-template-columns: 1.8rem minmax(0, 1fr);
+    padding-block: 1.6rem;
+  }
+
+  .home-pass2-schedule__time-hours {
+    font-size: clamp(2rem, 10.2vw, 3.25rem);
+    white-space: normal;
+  }
+
+  .home-pass2-schedule__week { grid-template-columns: 1fr; }
+  .home-pass2-schedule__week-item { padding: 2rem 0; }
+  .home-pass2-schedule__week-item + .home-pass2-schedule__week-item {
+    border-top: 1px solid rgba(16, 24, 32, .2);
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  .home-pass2-navbar {
+    padding-inline: .75rem;
+    padding-top: .75rem;
+  }
+
+  .home-pass2-navbar--elevated { padding-top: .45rem; }
+  .home-pass2-nav-brand-shell { max-width: calc(100vw - 5rem); }
+  .home-pass2-navbar-menu { top: 4.55rem !important; }
+
+  .home-pass2-sermon,
+  .home-pass2-events,
+  .home-pass2-nine-steps,
+  .home-pass2-prayer,
+  .home-pass2-social {
+    padding-inline: 1rem;
+  }
+
+  .home-pass2-sermon-title,
+  .home-pass2-events-heading h2,
+  .home-pass2-nine-steps-heading h2,
+  .home-pass2-prayer-copy h2,
+  .home-pass2-location-heading h2,
+  .home-pass2-social-heading h2 {
+    font-size: clamp(3.25rem, 15.2vw, 4.9rem);
+  }
+
+  .home-pass2-sermon-media {
+    border-radius: 1.35rem 1.35rem 4rem 1.35rem;
+  }
+
+  .home-pass2-sermon-note {
+    width: calc(100% - 1rem);
+    margin-top: -1.7rem;
+    padding: 1.65rem;
+    border-radius: 1.35rem;
+  }
+
+  .home-pass2-sermon-note h3 { font-size: 2.25rem; }
+  .home-pass2-sermon-actions { align-items: stretch; flex-direction: column; }
+  .home-pass2-sermon-actions .home-pass2-button { width: 100%; }
+  .home-pass2-sermon-actions .home-pass2-text-link { justify-content: center; }
+
+  .home-pass2-events-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .home-pass2-event-row {
+    grid-template-columns: 5.4rem minmax(0, 1fr);
+    gap: 1rem;
+    min-height: 0;
+    padding: 1.8rem 0;
+  }
+
+  .home-pass2-event-row:hover,
+  .home-pass2-event-row.is-preview-active { padding-inline: .5rem; }
+
+  .home-pass2-event-day { font-size: clamp(3rem, 15vw, 4.2rem); }
+  .home-pass2-event-copy h3 { font-size: 2rem; }
+
+  .home-pass2-event-time {
+    grid-column: 2;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .home-pass2-event-preview-cue { right: .2rem; bottom: .65rem; }
+  .home-pass2-events-preview { width: 100%; }
+  .home-pass2-events-preview-frame { aspect-ratio: 4 / 3; border-radius: 1.4rem 3rem 1.4rem 1.4rem; }
+
+  .home-pass2-nine-steps-heading h2 { line-height: .86; }
+  .home-pass2-nine-steps-heading em { font-size: .54em; line-height: 1.02; }
+  .home-pass2-nine-steps-signature { margin-top: 2.8rem; }
+  .home-pass2-heart-media { border-radius: 1.35rem; }
+  .home-pass2-nine-steps-orbit-label { display: none; }
+
+  .home-pass2-nine-steps-chapters { grid-template-columns: 1fr; }
+  .home-pass2-nine-steps-chapter { min-height: 8.5rem; }
+  .home-pass2-nine-steps-chapter + .home-pass2-nine-steps-chapter {
+    border-top: 1px solid rgba(255, 255, 255, .14);
+    border-left: 0;
+  }
+
+  .home-pass2-nine-steps-cta { width: 100%; }
+
+  .home-pass2-prayer-word {
+    top: 44%;
+    font-size: clamp(5.5rem, 31vw, 8.5rem);
+  }
+
+  .home-pass2-prayer-index { font-size: 3.2rem; }
+  .home-pass2-prayer-copy h2 { line-height: .9; }
+  .home-pass2-prayer-cta { width: 100%; }
+
+  .home-pass2-location {
+    min-height: max(100svh, 56rem);
+    margin-top: -4rem;
+  }
+
+  .home-pass2-location-media,
+  .home-pass2-location-shade { inset-block: -1.5rem; }
+
+  .home-pass2-location-image { object-position: 54% center; }
+
+  .home-pass2-location-shade {
+    background:
+      linear-gradient(180deg, rgba(3, 7, 12, .35), rgba(3, 7, 12, .12) 25%, rgba(3, 7, 12, .82) 72%, #06090e 100%),
+      linear-gradient(90deg, rgba(3, 7, 12, .52), transparent 75%);
+  }
+
+  .home-pass2-location-shell {
+    min-height: max(100svh, 56rem);
+    padding: 8rem 1rem 3.5rem;
+  }
+
+  .home-pass2-location-heading h2 { max-width: 9ch; }
+  .home-pass2-location-panel { padding: 1.5rem; }
+  .home-pass2-location-actions { align-items: stretch; flex-direction: column; }
+  .home-pass2-location-actions .home-pass2-button { width: 100%; }
+  .home-pass2-location-actions .home-pass2-text-link { justify-content: center; }
+  .home-pass2-location-caption { display: none; }
+
+  .home-pass2-social-link {
+    grid-template-columns: 2rem 1.8rem minmax(0, 1fr) 1.5rem;
+    gap: .65rem;
+    min-height: 6.7rem;
+  }
+
+  .home-pass2-social-name { font-size: 2rem; }
+  .home-pass2-social-label {
+    grid-column: 3;
+    margin-top: -1.2rem;
+    font-size: .72rem;
+  }
+
+  .home-pass2-social-arrow { grid-column: 4; grid-row: 1 / span 2; }
+
+  .home-pass2-footer-directory { grid-template-columns: 1fr; }
+  .home-pass2-footer-directory > * + * {
+    border-top: 1px solid rgba(255, 255, 255, .12);
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  .home-pass2-footer-legal { align-items: flex-start; flex-direction: column; }
+}
+
+@media (max-height: 650px) and (min-width: 600px) {
+  .nine-steps-timeline { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }
