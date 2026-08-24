@@ -41,6 +41,14 @@ export const MESSAGE = {
   thumbnail: '/images/message-sabiduria-relaciones-familiares.jpg',
 } as const;
 
+export const GIVING_BANK_DETAILS = {
+  bank: 'BBVA',
+  accountHolder: 'Manuel Carrasco García',
+  accountNumber: '1246099955',
+  cardNumber: '4152313755946923',
+  clabe: '012680012460999555',
+} as const;
+
 export const WHATSAPP_LINKS = {
   visit:
     'https://wa.me/524424112143?text=Hola%2C%20quisiera%20planear%20mi%20primera%20visita%20a%20Amistad%20Nueva%20Creaci%C3%B3n.',

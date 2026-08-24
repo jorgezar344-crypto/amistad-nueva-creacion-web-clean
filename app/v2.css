@@ -526,16 +526,25 @@
 .v2-giving-page__copy ul { display: grid; gap: 1rem; margin-top: 2rem; }
 .v2-giving-page__copy li { display: flex; gap: .8rem; align-items: flex-start; color: #4e4c48; line-height: 1.6; }
 .v2-giving-page__copy li svg { flex: none; color: var(--v2-blue); }
+.v2-giving-online-note { margin-top: 2.4rem; padding: 1.4rem 0; border-top: 1px solid rgba(31, 35, 36, .14); border-bottom: 1px solid rgba(31, 35, 36, .14); }
+.v2-giving-online-note span { color: var(--v2-blue); font-size: .65rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+.v2-giving-online-note strong { display: block; margin-top: .3rem; font-family: var(--font-serif), Georgia, serif; font-size: 1.35rem; font-weight: 550; }
+.v2-giving-online-note p { margin-top: .45rem; color: #716d67; font-size: .78rem; line-height: 1.6; }
 .v2-giving-panel { padding: clamp(2rem, 5vw, 4rem); border: 1px solid rgba(32, 36, 37, .12); border-radius: 2rem; background: rgba(255, 255, 255, .48); box-shadow: 0 35px 80px rgba(38, 39, 37, .13); backdrop-filter: blur(18px); }
 .v2-giving-panel h2 { margin-top: .9rem; font-family: var(--font-serif), Georgia, serif; font-size: clamp(2.2rem, 4vw, 4rem); font-weight: 500; }
-.v2-giving-panel__amounts { display: grid; grid-template-columns: repeat(2, 1fr); gap: .75rem; margin-top: 2rem; }
-.v2-giving-panel__amounts button { min-height: 64px; border: 1px solid rgba(31, 35, 36, .17); border-radius: 999px; background: rgba(255, 255, 255, .45); color: var(--v2-ink); font-weight: 800; transition: .25s ease; }
-.v2-giving-panel__amounts button[aria-pressed='true'] { border-color: var(--v2-blue); color: #fff; background: var(--v2-blue); box-shadow: 0 10px 24px rgba(11, 88, 119, .18); }
-.v2-giving-panel__other { display: grid; gap: .7rem; margin-top: 1rem; color: #5d5954; font-size: .75rem; font-weight: 800; }
-.v2-giving-panel__other input { height: 58px; padding: 0 1.2rem; border: 1px solid rgba(31, 35, 36, .18); border-radius: 1rem; background: rgba(255, 255, 255, .6); font-size: 1rem; }
-.v2-giving-panel > .v2-button { width: 100%; margin-top: 1.4rem; }
-.v2-button--disabled { cursor: not-allowed; opacity: .52; color: #fff; background: #29363d; }
-.v2-giving-panel > p:last-child { margin-top: 1rem; color: #77726b; font-size: .77rem; line-height: 1.6; text-align: center; }
+.v2-giving-bank__header { display: flex; align-items: end; justify-content: space-between; gap: 2rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(31, 35, 36, .14); }
+.v2-giving-bank__header p { display: grid; gap: .35rem; text-align: right; }
+.v2-giving-bank__header span, .v2-giving-bank__detail span { color: #74706a; font-size: .64rem; font-weight: 850; letter-spacing: .11em; text-transform: uppercase; }
+.v2-giving-bank__header strong { color: var(--v2-ink); font-size: .86rem; }
+.v2-giving-bank__details { display: grid; }
+.v2-giving-bank__detail { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 1.25rem; min-width: 0; padding: 1.45rem 0; border-bottom: 1px solid rgba(31, 35, 36, .12); }
+.v2-giving-bank__detail > div { display: grid; min-width: 0; gap: .55rem; }
+.v2-giving-bank__detail code { min-width: 0; color: var(--v2-ink); font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace; font-size: clamp(.98rem, 1.65vw, 1.28rem); font-variant-numeric: tabular-nums; font-weight: 750; letter-spacing: .025em; line-height: 1.35; overflow-wrap: anywhere; }
+.v2-giving-bank__detail button { min-width: 96px; min-height: 46px; padding: .65rem 1rem; border: 1px solid rgba(11, 88, 119, .24); border-radius: 999px; color: var(--v2-blue); background: rgba(255, 255, 255, .5); font-size: .72rem; font-weight: 850; transition: color .25s ease, background-color .25s ease, border-color .25s ease, transform .25s ease; }
+.v2-giving-bank__detail button:hover { color: #fff; background: var(--v2-blue); border-color: var(--v2-blue); transform: translateY(-1px); }
+.v2-giving-bank__detail button:focus-visible { outline: 2px solid var(--v2-cyan-deep); outline-offset: 3px; }
+.v2-giving-bank__notice { margin-top: 1.5rem; color: #69655f; font-size: .78rem; line-height: 1.65; }
+.v2-giving-copy-status { min-height: 1.25rem; margin-top: .65rem; color: var(--v2-blue); font-size: .72rem; font-weight: 800; }
 
 /* Events */
 .v2-events-featured { position: relative; min-height: 700px; display: grid; align-items: end; overflow: hidden; background: #071019; color: #fff; }
@@ -744,6 +753,8 @@
   .v2-messages-page__grid > div:first-child { min-height: 0; }
   .v2-messages-page__more { margin-top: 4rem; padding: 2.2rem 1rem; }
   .v2-giving-panel { padding: 1.5rem; border-radius: 1.4rem; }
+  .v2-giving-bank__header { align-items: flex-start; flex-direction: column; gap: .8rem; }
+  .v2-giving-bank__header p { text-align: left; }
   .v2-events-featured { min-height: 650px; }
   .v2-events-featured__content { grid-template-columns: 90px 1fr; gap: 1.5rem; padding-bottom: 3rem; }
   .v2-events-featured__date strong { font-size: 2.7rem; }
@@ -769,7 +780,8 @@
 }
 
 @media (max-width: 359px) {
-  .v2-giving-panel__amounts { grid-template-columns: 1fr; }
+  .v2-giving-bank__detail { grid-template-columns: 1fr; }
+  .v2-giving-bank__detail button { width: 100%; }
   .v2-events-featured__content { grid-template-columns: 1fr; }
   .v2-events-featured__date { width: 82px; }
   .v2-events-agenda article { grid-template-columns: 55px minmax(0, 1fr); }
