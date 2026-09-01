@@ -20,6 +20,18 @@ type ViewTransitionDocument = Document & {
 
 function StepMedia({ step }: { step: NineStepExperienceData }) {
   if (step.videoReady && step.videoSrc) {
+    if (step.videoSrc.startsWith('https://www.youtube-nocookie.com/embed/')) {
+      return (
+        <iframe
+          src={step.videoSrc}
+          title={`Video del Paso ${step.number}: ${step.name}`}
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        />
+      );
+    }
     return (
       <video controls playsInline preload="none" poster={step.posterSrc ?? NINE_STEPS_MAP_POSTER}>
         <source src={step.videoSrc} type="video/mp4" />

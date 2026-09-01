@@ -9,9 +9,12 @@ export interface NineStepExperienceData extends StepData {
 export const NINE_STEPS_EXPERIENCE: NineStepExperienceData[] = NINE_STEPS.map(
   (step) => ({
     ...step,
-    videoSrc: null,
+    videoSrc:
+      step.id === 'paso-01-aceptar-a-jesus'
+        ? 'https://www.youtube-nocookie.com/embed/gt-yJE6-h1M'
+        : null,
     posterSrc: null,
-    videoReady: false,
+    videoReady: step.id === 'paso-01-aceptar-a-jesus',
   }),
 );
 
